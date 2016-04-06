@@ -19,4 +19,5 @@
     </string>
     <string name="email">Correo Electronico</string>
     <string name="password">Contraseña</string>
+    <string name="password_recovery">¿Olvidaste tu Contraseña?</string>
 </resources>
