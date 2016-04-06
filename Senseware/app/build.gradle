@@ -8,8 +8,8 @@ android {
         applicationId "la.oja.senseware"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 20
+        versionName "2.0"
     }
     buildTypes {
         release {
