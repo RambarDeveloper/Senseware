@@ -1,5 +1,6 @@
 package la.oja.senseware;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,5 +42,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //Llama a la actividad de inicio de sesion a traves del boton "Iniciar Sesion"
+    public void inicioSesion(View view) {
+       Intent intento = new Intent(this, LoginActivity.class);
+       startActivity(intento);
     }
 }
