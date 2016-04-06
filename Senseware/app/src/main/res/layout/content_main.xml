@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,51 +8,53 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="la.oja.senseware.MainActivity"
-    tools:showIn="@layout/activity_main"
-    android:orientation="vertical">
+    tools:showIn="@layout/activity_main">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp
-        ">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
         <VideoView
             android:id="@+id/video"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_alignParentBottom="true"
+        android:id="@+id/botones">
 
         <Button
+            android:id="@+id/botonInicioSesion"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/iniciar_sesion"
+            android:onClick="iniciarSesion"
+            android:layout_margin="0dp"
+            style="@style/Widget.AppCompat.Button.Borderless" />
+
+        <Button
+            android:id="@+id/botonRegistro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Iniciar Sesion"
-            android:id="@+id/botonInicioSesion"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1
-            "
-            android:text="Registrarse"
-            android:id="@+id/botonRegistro"
-            android:layout_alignTop="@+id/botonInicioSesion"
-            android:layout_toRightOf="@+id/botonInicioSesion"
-            android:layout_toEndOf="@+id/botonInicioSesion" />
+            android:text="@string/registrarser"
+            style="@style/Base.Widget.AppCompat.Button.Borderless" />
     </LinearLayout>
 
 </LinearLayout>
