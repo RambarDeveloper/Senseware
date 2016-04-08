@@ -1,6 +1,8 @@
 package la.oja.senseware;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.VideoView;
+
+import java.net.URI;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +24,21 @@ public class MainActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        //Reproducir video
+        VideoView videoView = (VideoView) findViewById(R.id.video);
+        Uri path = Uri.parse("android.resource://la.oja.senseware/" + R.raw.senseware);
+        videoView.setVideoURI(path);
+        videoView.start();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        VideoView videoView = (VideoView) findViewById(R.id.video);
+        Uri path = Uri.parse("android.resource://la.oja.senseware/" + R.raw.senseware);
+        videoView.setVideoURI(path);
+        videoView.start();
     }
 
     @Override

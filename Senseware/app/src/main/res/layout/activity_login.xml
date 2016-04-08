@@ -26,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/hmargin_iniciar_sesion"
-        android:layout_marginRight="@dimen/hmargin_iniciar_sesion">
+        android:layout_marginRight="@dimen/hmargin_iniciar_sesion"
+        android:layout_marginTop="40dp">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -37,7 +38,8 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/sw_white"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
