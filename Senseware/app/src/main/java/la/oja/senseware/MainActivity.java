@@ -25,20 +25,27 @@ public class MainActivity extends AppCompatActivity {
         //setSupportActionBar(toolbar);
 
         //Reproducir video
-        VideoView videoView = (VideoView) findViewById(R.id.video);
-        Uri path = Uri.parse("android.resource://la.oja.senseware/" + R.raw.senseware);
-        videoView.setVideoURI(path);
-        videoView.start();
+       loadVideo();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        loadVideo();
+    }
 
+    //Metodo para reproducir video (loop)
+    public void loadVideo(){
         VideoView videoView = (VideoView) findViewById(R.id.video);
         Uri path = Uri.parse("android.resource://la.oja.senseware/" + R.raw.senseware);
         videoView.setVideoURI(path);
         videoView.start();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
     }
 
     @Override
