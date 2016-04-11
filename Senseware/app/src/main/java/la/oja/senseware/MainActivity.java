@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Llama a la actividad de inicio de sesion a traves del boton "Iniciar Sesion"
     public void inicioSesion(View view) {
-       Intent intento = new Intent(this, LoginActivity.class);
+       Intent intento = new Intent(this, ClasesActivity.class);
        startActivity(intento);
     }
 }
