@@ -2,6 +2,7 @@ package la.oja.senseware;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -29,9 +30,8 @@ public class ClasesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clases);
+
         getSupportActionBar().hide();
-
-
 
 
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
