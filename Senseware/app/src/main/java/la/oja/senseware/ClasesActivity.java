@@ -1,13 +1,17 @@
 package la.oja.senseware;
 
+import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ClasesActivity extends AppCompatActivity {
@@ -18,32 +22,39 @@ public class ClasesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        textIn = (EditText)findViewById(R.id.textin);
-        buttonAdd = (Button)findViewById(R.id.add);
-        container = (LinearLayout)findViewById(R.id.container);
+        setContentView(R.layout.activity_clases);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.activity_clases, null);
 
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
+        // Find the ScrollView
+        ScrollView sv = (ScrollView) v.findViewById(R.id.scrollView1);
 
-            @Override
-            public void onClick(View arg0) {
-                LayoutInflater layoutInflater =
-                        (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View addView = layoutInflater.inflate(R.layout.row, null);
-                TextView textOut = (TextView) addView.findViewById(R.id.textout);
-                textOut.setText(textIn.getText().toString());
-                Button buttonRemove = (Button) addView.findViewById(R.id.remove);
-                buttonRemove.setOnClickListener(new View.OnClickListener() {
+        // Create a LinearLayout element
 
-                    @Override
-                    public void onClick(View v) {
-                        ((LinearLayout) addView.getParent()).removeView(addView);
-                    }
-                });
+        LinearLayout emprendedor = new LinearLayout(this);
+        emprendedor.setOrientation(LinearLayout.HORIZONTAL);
 
-                container.addView(addView);
-            }
-        });
+
+
+
+        // Add text
+        TextView tv = new TextView(this);
+        tv.setText("my text ");
+        emprendedor.addView(tv);
+
+        Button button = new Button(this);
+        button.setText("Start");
+        emprendedor.addView(button);
+
+        // Add the LinearLayout element to the ScrollView
+        sv.addView(emprendedor);
+
+        // Display the view
+        setContentView(v);
+
+
+
+
 
     }
 }
