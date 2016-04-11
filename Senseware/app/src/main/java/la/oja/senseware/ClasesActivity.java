@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ActionMenuView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,10 @@ public class ClasesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clases);
+        getSupportActionBar().hide();
+
+
+
 
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 

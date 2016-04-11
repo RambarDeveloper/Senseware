@@ -56,10 +56,10 @@
 
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/imageButton"
-            android:src="@drawable/ic_action_name"/>
+            android:src="@drawable/ic_action_action_view_list"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
             android:text="Respuestas"
             android:id="@+id/textoRespuestas"
             android:textColor="@android:color/darker_gray"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>
