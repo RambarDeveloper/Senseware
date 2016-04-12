@@ -50,9 +50,11 @@ public class ClasesActivity extends AppCompatActivity {
             ImageView imagen = new ImageView(this);
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(200, 200);
             imageParams.gravity=Gravity.CENTER_HORIZONTAL;
+            imageParams.bottomMargin=10;
+            imageParams.topMargin=10;
             imagen.setLayoutParams(imageParams);
             imagen.setId(i * 100);
-            imagen.setImageResource(R.drawable.sw_white);
+            imagen.setImageResource(R.drawable.avatar_bill_gates);
             emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
 
             //TextView
