@@ -2,7 +2,12 @@ package la.oja.senseware;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -37,7 +42,7 @@ public class ClasesActivity extends AppCompatActivity {
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 
 
-        for(int i=0; i<4; i++){
+        for(int i=0; i<7; i++){
 
             //Creando LinearLayout (contenedor) para cada uno de los emprendedores
             LinearLayout emprendedorLayout = new LinearLayout(this);
@@ -48,23 +53,43 @@ public class ClasesActivity extends AppCompatActivity {
 
             //Creando ImageView para mostrar imagen de cada emprendedor
             ImageView imagen = new ImageView(this);
-            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(200, 200);
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(400, 400);
             imageParams.gravity=Gravity.CENTER_HORIZONTAL;
-            imageParams.bottomMargin=10;
-            imageParams.topMargin=10;
+            imageParams.bottomMargin=(int)getResources().getDimension(R.dimen.margen_emprendedor_imagen);
+            imageParams.topMargin=(int)getResources().getDimension(R.dimen.margen_emprendedor_imagen);
             imagen.setLayoutParams(imageParams);
-            imagen.setId(i * 100);
-            imagen.setImageResource(R.drawable.avatar_bill_gates);
+            imagen.setId(i + 200);
+            imagen.getLayoutParams().height=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
+            imagen.getLayoutParams().width=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
+
+
+            //Creando imagen circular dimamicamente
+            Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
+            RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
+            roundedBitmap.setCircular(true);
+            imagen.setImageDrawable(roundedBitmap);
             emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
 
-            //TextView
+            //TextView Nombre Emprendedor
             TextView textoNombre = new TextView(this);
             LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             textParams.gravity=Gravity.CENTER_HORIZONTAL;
             textoNombre.setLayoutParams(textParams);
+            textoNombre.setTypeface(null, Typeface.BOLD);
             textoNombre.setText("Prueba " + i);
+            textoNombre.setId(i + 500);
             textoNombre.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             emprendedorLayout.addView(textoNombre);
+
+            //TextView
+            TextView textoClases = new TextView(this);
+            LinearLayout.LayoutParams textClaseParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            textClaseParams.gravity=Gravity.CENTER_HORIZONTAL;
+            textClaseParams.bottomMargin=10;
+            textoClases.setLayoutParams(textClaseParams);
+            textoClases.setText("5/" + i);
+            textoClases.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            emprendedorLayout.addView(textoClases);
 
             listaDeClases.addView(emprendedorLayout);
         }
