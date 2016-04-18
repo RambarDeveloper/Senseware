@@ -31,7 +31,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="la.oja.senseware.MainActivity" />
         </activity>
-        <activity android:name=".ClasesActivity"></activity>
+        <activity android:name=".ClasesActivity" />
+        <activity android:name=".ClaseActivity"></activity>
     </application>
 
 </manifest>
