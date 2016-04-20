@@ -142,10 +142,20 @@ public class AudioClaseActivity extends Activity {
 
     public Runnable UpdateSongTime = new Runnable() {
         public void run() {
+
             finalTime=videoClase.getDuration();
             seekbar.setMax((int)finalTime);
             startTime = videoClase.getCurrentPosition();
+
             if(TimeUnit.MILLISECONDS.toSeconds((long) startTime)<10){
+                tx1.setText(String.format("%d:0%d",
+
+                                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                                toMinutes((long) startTime)))
+                );
+            }else if (TimeUnit.MILLISECONDS.toSeconds((long) startTime)>=60&&TimeUnit.MILLISECONDS.toSeconds((long) startTime)<70){
                 tx1.setText(String.format("%d:0%d",
 
                                 TimeUnit.MILLISECONDS.toMinutes((long) startTime),
@@ -176,6 +186,10 @@ public class AudioClaseActivity extends Activity {
 
             seekbar.setProgress((int)startTime);
             myHandler.postDelayed(this, 100);
+
+            if((TimeUnit.MILLISECONDS.toSeconds((long) startTime)==TimeUnit.MILLISECONDS.toSeconds((long) finalTime))&&(TimeUnit.MILLISECONDS.toSeconds((long) startTime)>0)){
+                startButton.setImageResource(R.mipmap.reload);
+            }
         }
     };
 
