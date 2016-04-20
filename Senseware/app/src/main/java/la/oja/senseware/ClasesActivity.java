@@ -2,6 +2,7 @@ package la.oja.senseware;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -42,6 +43,7 @@ public class ClasesActivity extends AppCompatActivity {
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 
 
+
         for(int i=0; i<7; i++){
 
             //Creando LinearLayout (contenedor) para cada uno de los emprendedores
@@ -61,6 +63,17 @@ public class ClasesActivity extends AppCompatActivity {
             imagen.setId(i + 200);
             imagen.getLayoutParams().height=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
             imagen.getLayoutParams().width=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
+
+            //Agregando onClick listener
+            final Intent intento = new Intent(this, AudioClaseActivity.class);
+            imagen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(intento);
+                }
+            });
+
+
 
 
             //Creando imagen circular dimamicamente
