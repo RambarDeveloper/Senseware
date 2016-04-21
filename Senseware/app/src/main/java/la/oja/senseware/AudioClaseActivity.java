@@ -38,12 +38,15 @@ public class AudioClaseActivity extends Activity {
     private LinearLayout barraInferiorRespueta;
     private EditText respuesta;
     private SeekBar seekBarRespuesta;
-    ImageButton startButtonRespuesta;
+    private ImageButton startButtonRespuesta;
+    private RelativeLayout respuestaContenedor;
 
     //Variables progreso audio
     private double startTime = 0;
     private double finalTime = 0;
     private Handler myHandler = new Handler();
+    private TextView tiempoCuenta;
+    double tiempoCuentaNumero;
 
 
     public static int oneTimeOnly = 0;
@@ -77,6 +80,8 @@ public class AudioClaseActivity extends Activity {
         imagenEmprendedor.setImageResource(R.drawable.avatar_bill_gates);
         startButtonRespuesta = (ImageButton) findViewById(R.id.imageButtonRespuesta);
         startButtonRespuesta.setImageResource(R.mipmap.pause_respuesta);
+        respuestaContenedor = (RelativeLayout) findViewById(R.id.respuestaContenedor);
+        tiempoCuenta = (TextView) findViewById(R.id.tiempoCuenta);
 
 
 
@@ -136,11 +141,11 @@ public class AudioClaseActivity extends Activity {
                 if (videoClase.isPlaying()) {
                     Toast.makeText(getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
                     videoClase.pause();
-                    startButton.setImageResource(R.mipmap.play_respuesta);
+                    startButtonRespuesta.setImageResource(R.mipmap.play_respuesta);
                 } else {
                     Toast.makeText(getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
                     videoClase.start();
-                    startButton.setImageResource(R.mipmap.pause_respuesta);
+                    startButtonRespuesta.setImageResource(R.mipmap.pause_respuesta);
 
                     finalTime = videoClase.getDuration();
                     startTime = videoClase.getCurrentPosition();
@@ -156,7 +161,7 @@ public class AudioClaseActivity extends Activity {
                                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) startTime)))
                     );
 
-                    seekbarAudio.setProgress((int) startTime);
+                    seekBarRespuesta.setProgress((int) startTime);
                     myHandler.postDelayed(UpdateSongTime, 100);
                 }
             }
@@ -211,6 +216,7 @@ public class AudioClaseActivity extends Activity {
     public Runnable UpdateSongTime = new Runnable() {
         public void run() {
 
+
             finalTime=videoClase.getDuration();
             seekbarAudio.setMax((int) finalTime);
             seekBarRespuesta.setMax((int)finalTime);
@@ -264,8 +270,15 @@ public class AudioClaseActivity extends Activity {
                 barraInferiorAudio.setVisibility(View.GONE);
                 barraInferiorRespueta.setVisibility(View.VISIBLE);
                 videoContenedor.setVisibility(View.GONE);
-                respuesta.setVisibility(View.VISIBLE);
+                respuestaContenedor.setVisibility(View.VISIBLE);
                 barraSuperiorRespueta.setVisibility(View.VISIBLE);
+                tiempoCuentaNumero=finalTime-startTime;
+                tiempoCuenta.setText(String.format("%d:%d",
+                                TimeUnit.MILLISECONDS.toMinutes((long) (finalTime-startTime)),
+                                TimeUnit.MILLISECONDS.toSeconds((long) (finalTime-startTime)) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                                toMinutes((long) (finalTime-startTime))))
+                );
             }
 
 
@@ -274,7 +287,7 @@ public class AudioClaseActivity extends Activity {
                 barraInferiorAudio.setVisibility(View.VISIBLE);
                 barraInferiorRespueta.setVisibility(View.GONE);
                 videoContenedor.setVisibility(View.VISIBLE);
-                respuesta.setVisibility(View.GONE);
+                respuestaContenedor.setVisibility(View.GONE);
                 barraSuperiorRespueta.setVisibility(View.GONE);
             }
 
