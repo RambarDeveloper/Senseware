@@ -39,10 +39,6 @@
         <activity
             android:name=".AudioClaseActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-        <activity
-            android:name=".RespuestaActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
     </application>
 
 </manifest>

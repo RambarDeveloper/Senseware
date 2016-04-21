@@ -13,11 +13,11 @@
     <!-- Barra superior respuesta -->
 
     <RelativeLayout
+        android:id="@+id/barraSuperiorRespuesta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:id="@+id/barraSuperiorRespuesta"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/imagenEmprendedor"
@@ -25,7 +25,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:src="@drawable/avatar_bill_gates"/>
+            android:src="@drawable/avatar_bill_gates" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,16 +37,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Responde en:"
-                android:textSize="20sp"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="00:20"
-                android:textSize="20sp"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -56,11 +56,11 @@
 
     <!-- Seccion video / respuesta-->
     <RelativeLayout
+        android:id="@+id/videoContenedor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/black"
-        android:id="@+id/videoContenedor">
+        android:background="@android:color/black">
 
         <VideoView
             android:id="@+id/videoClase"
@@ -84,13 +84,13 @@
     <!-- Barra inferior audio / subtitulos-->
 
     <LinearLayout
+        android:id="@+id/barraInferiorAudio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@android:color/black"
         android:orientation="horizontal"
-        android:id="@+id/barraInferiorAudio"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <ImageButton
@@ -111,8 +111,10 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:indeterminate="false"
-            android:progressDrawable="@drawable/progress"
-            android:thumb="@drawable/thumb" />
+            android:progressTint="@android:color/holo_red_dark"
+            android:thumbTint="@android:color/holo_red_dark" />
+        <!--android:progressDrawable="@drawable/progress"
+        android:thumb="@drawable/thumb"-->
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -137,33 +139,37 @@
     <!-- Barra inferior respuesta-->
 
     <LinearLayout
+        android:id="@+id/barraInferiorRespuesta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="visible"
-        android:id="@+id/barraInferiorRespuesta">
+        android:visibility="gone">
 
         <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
             android:id="@+id/imageButtonRespuesta"
-            android:background="#00ffffff"
-            android:layout_margin="10dp" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="#00ffffff" />
 
         <SeekBar
             android:id="@+id/seekBarRespuesta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:indeterminate="false"
+            android:progressTint="@android:color/background_dark"
+            android:splitTrack="false"
+            android:thumbTint="@android:color/black" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#c90c19"
             android:text="Responder"
-            android:textColor="@android:color/white"
-            android:background="#c90c19" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <!-- Fin de barra inferior respueta-->
