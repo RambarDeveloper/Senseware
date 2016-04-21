@@ -2,68 +2,84 @@ package la.oja.senseware;
 
 
 import android.app.Activity;
-import android.app.Activity;
-
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaPlayer;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import la.oja.senseware.R;
 
 import java.util.concurrent.TimeUnit;
 
 
 
 public class AudioClaseActivity extends Activity {
+
+    //Elementos layout audio/subtitulo
     private ImageButton startButton;
     private VideoView videoClase;
+    private SeekBar seekbarAudio;
+    private TextView tx1;
+    private RelativeLayout videoContenedor;
+    private LinearLayout barraInferiorAudio;
+
+    //Elementos layout respuesta
+    private RelativeLayout barraSuperiorRespueta;
+    private LinearLayout barraInferiorRespueta;
+    private EditText respuesta;
+    private SeekBar seekBarRespuesta;
+
+    //Variables progreso audio
     private double startTime = 0;
     private double finalTime = 0;
     private Handler myHandler = new Handler();
-    private SeekBar seekbar;
-    private TextView tx1;
+
+
     public static int oneTimeOnly = 0;
     private Thread videoThread;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_clase);
 
+        //Elementos layout audio
+        videoContenedor = (RelativeLayout) findViewById(R.id.videoContenedor);
+        barraInferiorAudio = (LinearLayout) findViewById(R.id.barraInferiorAudio);
         startButton = (ImageButton) findViewById(R.id.button);
         tx1=(TextView)findViewById(R.id.textView2);
+        seekbarAudio =(SeekBar)findViewById(R.id.seekBar);
+        seekbarAudio.setClickable(true);
+        videoClase = (VideoView) findViewById(R.id.videoClase);
+        Uri URIVideo = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_victor);
+        videoClase.setVideoURI(URIVideo);
+
+
+        //Elementos layout respuesta
+        barraSuperiorRespueta = (RelativeLayout) findViewById(R.id.barraSuperiorRespuesta);
+        barraInferiorRespueta = (LinearLayout)findViewById(R.id.barraInferiorRespuesta);
+        respuesta = (EditText)findViewById(R.id.respuesta);
+        seekBarRespuesta = (SeekBar) findViewById(R.id.seekBarRespuesta);
+
+
 
         //Creando nuevo hilo
         //videoThread = new Thread();
         //videoThread.start();
 
-        videoClase = (VideoView) findViewById(R.id.videoClase);
-        Uri URIVideo = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_victor);
-        videoClase.setVideoURI(URIVideo);
-        seekbar=(SeekBar)findViewById(R.id.seekBar);
-        seekbar.setClickable(true);
+
         setupListeners();
 
         startButton.performClick();
-
 
     }
 
@@ -84,7 +100,7 @@ public class AudioClaseActivity extends Activity {
                     startTime = videoClase.getCurrentPosition();
 
                     if (oneTimeOnly == 0) {
-                        seekbar.setMax((int) finalTime);
+                        seekbarAudio.setMax((int) finalTime);
                         oneTimeOnly = 1;
                     }
 
@@ -94,13 +110,13 @@ public class AudioClaseActivity extends Activity {
                                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) startTime)))
                     );
 
-                    seekbar.setProgress((int) startTime);
+                    seekbarAudio.setProgress((int) startTime);
                     myHandler.postDelayed(UpdateSongTime, 100);
                 }
             }
         });
 
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekbarAudio.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
@@ -136,16 +152,14 @@ public class AudioClaseActivity extends Activity {
 
 
 
-    public void loadVideo(){
-
-    }
-
     public Runnable UpdateSongTime = new Runnable() {
         public void run() {
 
             finalTime=videoClase.getDuration();
-            seekbar.setMax((int)finalTime);
+            seekbarAudio.setMax((int) finalTime);
+            seekBarRespuesta.setMax((int)finalTime);
             startTime = videoClase.getCurrentPosition();
+            long tiempoRespuesta = 30;
 
             if(TimeUnit.MILLISECONDS.toSeconds((long) startTime)<10){
                 tx1.setText(String.format("%d:0%d",
@@ -184,9 +198,40 @@ public class AudioClaseActivity extends Activity {
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime)))
             );*/
 
-            seekbar.setProgress((int)startTime);
+            seekbarAudio.setProgress((int) startTime);
+            seekBarRespuesta.setProgress((int)startTime);
             myHandler.postDelayed(this, 100);
 
+            //Cambiando elementos visuales a SUBTITULOS -> RESPUESTA
+            if(TimeUnit.MILLISECONDS.toSeconds((long) startTime)>=tiempoRespuesta){
+                /*bundle.putInt("progreso_videos", (int)startTime);
+                bundle.putInt("id_imagen", R.drawable.avatar_bill_gates);
+                bundle.putInt("tiempo_video", (int)finalTime);
+                intentoRespuesta.putExtras(bundle);
+                startActivity(intentoRespuesta);*/
+                barraInferiorAudio.setVisibility(View.GONE);
+                barraInferiorRespueta.setVisibility(View.VISIBLE);
+                videoContenedor.setVisibility(View.GONE);
+                respuesta.setVisibility(View.VISIBLE);
+                barraSuperiorRespueta.setVisibility(View.VISIBLE);
+            }
+
+
+            //Cambiando elementos visuales a RESPUESTA -> SUBTITULOS
+            if(TimeUnit.MILLISECONDS.toSeconds((long) startTime)<tiempoRespuesta){
+                /*bundle.putInt("progreso_videos", (int)startTime);
+                bundle.putInt("id_imagen", R.drawable.avatar_bill_gates);
+                bundle.putInt("tiempo_video", (int)finalTime);
+                intentoRespuesta.putExtras(bundle);
+                startActivity(intentoRespuesta);*/
+                barraInferiorAudio.setVisibility(View.VISIBLE);
+                barraInferiorRespueta.setVisibility(View.GONE);
+                videoContenedor.setVisibility(View.VISIBLE);
+                respuesta.setVisibility(View.GONE);
+                barraSuperiorRespueta.setVisibility(View.GONE);
+            }
+
+            //Cambiando imagen del boton por reload
             if((TimeUnit.MILLISECONDS.toSeconds((long) startTime)==TimeUnit.MILLISECONDS.toSeconds((long) finalTime))&&(TimeUnit.MILLISECONDS.toSeconds((long) startTime)>0)){
                 startButton.setImageResource(R.mipmap.reload);
             }

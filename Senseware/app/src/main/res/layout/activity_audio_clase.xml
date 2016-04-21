@@ -10,12 +10,52 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
+    <!-- Barra superior respuesta -->
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/barraSuperiorRespuesta">
+
+        <ImageView
+            android:id="@+id/imagenEmprendedor"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Responde en:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="00:20"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- Fin barra superior respuesta -->
+
+    <!-- Seccion video / respuesta-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/black">
+        android:background="@android:color/black"
+        android:id="@+id/videoContenedor">
 
         <VideoView
             android:id="@+id/videoClase"
@@ -25,24 +65,36 @@
 
     </RelativeLayout>
 
+    <EditText
+        android:id="@+id/respuesta"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="top"
+        android:visibility="gone" />
+
+    <!-- Fin Seccion video / respuesta-->
+
+
+    <!-- Barra inferior audio / subtitulos-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/black"
         android:orientation="horizontal"
-        android:background="@android:color/black">
-
+        android:id="@+id/barraInferiorAudio">
 
 
         <ImageButton
+            android:id="@+id/button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:src="@mipmap/pause"
-            android:id="@+id/button"
+            android:layout_marginLeft="10dp"
             android:background="#000000"
-            android:layout_marginLeft="10dp" />
+            android:src="@mipmap/pause" />
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -50,11 +102,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:progressDrawable="@drawable/progress"
-            android:thumb="@drawable/thumb"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:indeterminate="false"
-            android:layout_weight="1" />
+            android:progressDrawable="@drawable/progress"
+            android:thumb="@drawable/thumb" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -73,5 +125,36 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!-- Fin Barra inferior audio / subtitulos-->
+
+    <!-- Barra inferior respuesta-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:id="@+id/barraInferiorRespuesta">
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center" />
+
+        <SeekBar
+            android:id="@+id/seekBarRespuesta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Responder" />
+    </LinearLayout>
+
+    <!-- Fin de barra inferior respueta-->
 
 </LinearLayout>
