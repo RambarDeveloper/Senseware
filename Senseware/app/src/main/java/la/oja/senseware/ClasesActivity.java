@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 public class ClasesActivity extends AppCompatActivity {
     EditText textIn;
@@ -37,8 +42,9 @@ public class ClasesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clases);
 
-        getSupportActionBar().hide();
+        new HttpRequestGetData().execute();
 
+        getSupportActionBar().hide();
 
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 
@@ -107,4 +113,37 @@ public class ClasesActivity extends AppCompatActivity {
             listaDeClases.addView(emprendedorLayout);
         }
     }
+
+
+    private class HttpRequestGetData extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            String result = "Nada";
+            try
+            {
+                // The connection URL
+                String url = "http://ojalab.com/senseware/api/day?day=1";
+
+                // Create a new RestTemplate instance
+                RestTemplate restTemplate = new RestTemplate();
+
+                // Add the String message converter
+                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+                // Make the HTTP GET request, marshaling the response to a String
+                result = restTemplate.getForObject(url, String.class, "Android");
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
