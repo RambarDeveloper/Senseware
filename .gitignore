@@ -37,3 +37,7 @@ captures/
 
 # Keystore files
 *.jks
+
+# Juan Carlos
+.idea/gradle.xml
+.idea/misc.xml
