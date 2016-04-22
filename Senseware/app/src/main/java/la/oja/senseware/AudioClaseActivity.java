@@ -173,7 +173,13 @@ public class AudioClaseActivity extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    videoClase.seekTo(progress);
+                    if(progress<(int)startTime){
+                        videoClase.seekTo(progress);
+
+                    }
+                    else {
+                        videoClase.seekTo((int)startTime);
+                    }
                 }
             }
 
@@ -212,7 +218,7 @@ public class AudioClaseActivity extends Activity {
 
     }
 
-
+    //Aca se actualiza el seekbar
     public Runnable UpdateSongTime = new Runnable() {
         public void run() {
 
@@ -252,13 +258,6 @@ public class AudioClaseActivity extends Activity {
                     startButton.setImageResource(R.mipmap.reload);
                 }
             }
-
-
-            /*tx2.setText(String.format("/%d:%d",
-                            TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                            TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime)))
-            );*/
 
             seekbarAudio.setProgress((int) startTime);
             seekBarRespuesta.setProgress((int) startTime);
