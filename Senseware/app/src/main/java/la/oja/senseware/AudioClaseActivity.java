@@ -273,12 +273,41 @@ public class AudioClaseActivity extends Activity {
                 respuestaContenedor.setVisibility(View.VISIBLE);
                 barraSuperiorRespueta.setVisibility(View.VISIBLE);
                 tiempoCuentaNumero=finalTime-startTime;
-                tiempoCuenta.setText(String.format("%d:%d",
-                                TimeUnit.MILLISECONDS.toMinutes((long) (finalTime-startTime)),
-                                TimeUnit.MILLISECONDS.toSeconds((long) (finalTime-startTime)) -
-                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                                toMinutes((long) (finalTime-startTime))))
-                );
+
+                //Contador de tiempo respuesta
+                if(TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                toMinutes((long) (finalTime - startTime)))<10){
+
+                    tiempoCuenta.setText(String.format("%d:0%d",
+                                    TimeUnit.MILLISECONDS.toMinutes((long) (finalTime - startTime)),
+                                    TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
+                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                                    toMinutes((long) (finalTime - startTime))))
+                    );
+
+                }else if (TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                toMinutes((long) (finalTime - startTime)))>60&&TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                toMinutes((long) (finalTime - startTime)))<70){
+
+                    tiempoCuenta.setText(String.format("%d:0%d",
+                                    TimeUnit.MILLISECONDS.toMinutes((long) (finalTime - startTime)),
+                                    TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
+                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                                    toMinutes((long) (finalTime - startTime))))
+                    );
+
+                }else{
+                    tiempoCuenta.setText(String.format("%d:%d",
+                                    TimeUnit.MILLISECONDS.toMinutes((long) (finalTime - startTime)),
+                                    TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
+                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                                    toMinutes((long) (finalTime - startTime))))
+                    );
+                }
+
             }
 
 
@@ -294,6 +323,14 @@ public class AudioClaseActivity extends Activity {
             //Cambiando imagen del boton por reload
             if((TimeUnit.MILLISECONDS.toSeconds((long) startTime)==TimeUnit.MILLISECONDS.toSeconds((long) finalTime))&&(TimeUnit.MILLISECONDS.toSeconds((long) startTime)>0)){
                 startButtonRespuesta.setImageResource(R.mipmap.reload_respuesta);
+            }else{
+                if(videoClase.isPlaying()){
+                    startButtonRespuesta.setImageResource(R.mipmap.pause_respuesta);
+                    startButton.setImageResource(R.mipmap.pause);
+                }else{
+                    startButtonRespuesta.setImageResource(R.mipmap.play_respuesta);
+                    startButton.setImageResource(R.mipmap.play_icon);
+                }
             }
         }
     };
