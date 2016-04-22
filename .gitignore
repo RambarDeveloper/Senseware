@@ -39,5 +39,5 @@ captures/
 *.jks
 
 # Juan Carlos
-.idea/gradle.xml
-.idea/misc.xml
+Senseware/.idea/gradle.xml
+Senseware/.idea/misc.xml
