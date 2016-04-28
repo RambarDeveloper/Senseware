@@ -37,3 +37,7 @@ captures/
 
 # Keystore files
 *.jks
+
+# Juan Carlos
+Senseware/.idea/gradle.xml
+Senseware/.idea/misc.xml
