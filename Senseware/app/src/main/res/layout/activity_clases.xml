@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="10dp"
-        android:background="#f8f8f8">
+        android:background="@android:color/white">
 
         <ImageView
             android:layout_width="30dp"
@@ -24,7 +24,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-                android:src="@mipmap/oja_logo"
+                android:src="@mipmap/sw_black"
                 android:layout_marginTop="3dp" />
 
     </RelativeLayout>
@@ -54,14 +54,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:background="@android:color/background_dark">
+        android:background="#333333">
 
 
         <ImageButton
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:id="@+id/imageButton"
-            android:src="@mipmap/icon_barra_inferior"
+            android:src="@mipmap/menu_icon_clases"
             android:background="#00ffffff"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
@@ -73,8 +73,9 @@
             android:layout_height="wrap_content"
             android:text="Respuestas"
             android:id="@+id/textoRespuestas"
-            android:textColor="#757272"
-            android:textSize="18sp" />
+            android:textColor="#9D9D9D"
+            android:textSize="18sp"
+            android:layout_marginBottom="5dp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package la.oja.senseware;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -77,11 +78,20 @@ public class ClasesActivity extends AppCompatActivity {
 
 
             //Creando imagen circular dimamicamente
-            Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
-            RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
-            roundedBitmap.setCircular(true);
-            imagen.setImageDrawable(roundedBitmap);
-            emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
+            if(i!=3){
+                Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
+                RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
+                roundedBitmap.setCircular(true);
+                imagen.setImageDrawable(roundedBitmap);
+                emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
+            }else{
+                Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.play_red);
+                RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
+                roundedBitmap.setCircular(true);
+                imagen.setImageDrawable(roundedBitmap);
+                emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
+            }
+
 
             //TextView Nombre Emprendedor
             TextView textoNombre = new TextView(this);
@@ -92,6 +102,8 @@ public class ClasesActivity extends AppCompatActivity {
             textoNombre.setText("Prueba " + i);
             textoNombre.setId(i + 500);
             textoNombre.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            textoNombre.setTextColor(getResources().getColorStateList(R.color.textColorNombresClases));
+            textoNombre.setTypeface(Typeface.DEFAULT_BOLD);
             emprendedorLayout.addView(textoNombre);
 
             //TextView
@@ -101,6 +113,7 @@ public class ClasesActivity extends AppCompatActivity {
             textClaseParams.bottomMargin=10;
             textoClases.setLayoutParams(textClaseParams);
             textoClases.setText("5/" + i);
+            textoClases.setTextColor(getResources().getColorStateList(R.color.textColorClases));
             textoClases.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             emprendedorLayout.addView(textoClases);
 
