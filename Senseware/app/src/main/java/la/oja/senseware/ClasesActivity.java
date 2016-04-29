@@ -9,11 +9,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,13 +32,34 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import la.oja.senseware.Modelo.Day;
+
 public class ClasesActivity extends AppCompatActivity {
     EditText textIn;
+    int tipoDePregunta; //si es texto, hint
+    int claseActiva; //clase que debe estar activa para el usuario;
+    int lenghtArraylist;
     Button buttonAdd;
     LinearLayout container;
+
+    ArrayList<Day> arrayDias;//Arreglo para la informacion de los dias
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +74,11 @@ public class ClasesActivity extends AppCompatActivity {
 
 
 
-        for(int i=0; i<7; i++){
+        for(int i=lenghtArraylist-1; i>0; i--){
+
+            if(arrayDias.get(i).getVisible()==1) {
+
+            }
 
             //Creando LinearLayout (contenedor) para cada uno de los emprendedores
             LinearLayout emprendedorLayout = new LinearLayout(this);
@@ -135,7 +162,7 @@ public class ClasesActivity extends AppCompatActivity {
             try
             {
                 // The connection URL
-                String url = "http://ojalab.com/senseware/api/day?day=1";
+                String url = "http://ojalab.com/senseware/api/day";
 
                 // Create a new RestTemplate instance
                 RestTemplate restTemplate = new RestTemplate();
@@ -145,6 +172,30 @@ public class ClasesActivity extends AppCompatActivity {
 
                 // Make the HTTP GET request, marshaling the response to a String
                 result = restTemplate.getForObject(url, String.class, "Android");
+
+                JSONObject reader = new JSONObject(result);
+
+                JSONArray dias = reader.getJSONArray("result");
+
+                arrayDias = new ArrayList<Day>();
+
+                //recorrer objeto JSON y almacenar informacion en arraylist
+                lenghtArraylist = dias.length();
+
+                for(int i = 0; i<dias.length(); i++){
+                    Day dia = new Day();
+
+                    JSONObject jsonDia = dias.getJSONObject(i);
+
+                    dia.setId_day(jsonDia.getInt("id_day"));
+                    dia.setDay(jsonDia.getInt("day"));
+                    dia.setVisible_clases(jsonDia.getInt("visibleclasses"));
+                    dia.setTitle(jsonDia.getString("title"));
+                    dia.setVisible(jsonDia.getInt("visible"));
+
+                    arrayDias.add(dia);
+
+                }
             }
             catch (Exception e)
             {
@@ -155,8 +206,78 @@ public class ClasesActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), arrayDias.get(lenghtArraylist-2).getTitle(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private class HttpRequestGetImages extends AsyncTask<String, Void, Boolean>{
+
+        boolean download = true;
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            File SDCardRoot = Environment.getExternalStorageDirectory(); // location where you want to store
+            File directory = new File(SDCardRoot, "/my_folder/"); //create directory to keep your downloaded file
+            if (!directory.exists())
+            {
+                directory.mkdir();
+            }
+            String fileName = "mySong" + ".mp3"; //song name that will be stored in your device in case of song
+//String fileName = "myImage" + ".jpeg"; in case of image
+            try
+            {
+                InputStream input = null;
+                try{
+                    URL url = new URL("ASDA"); // link of the song which you want to download like (http://...)
+                    input = url.openStream();
+                    OutputStream output = new FileOutputStream(new File(directory, fileName));
+                    download = true;
+                    try {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead = 0;
+                        while ((bytesRead = input.read(buffer, 0, buffer.length)) >= 0)
+                        {
+                            output.write(buffer, 0, bytesRead);
+                            download = true;
+                        }
+                        output.close();
+                    }
+                    catch (Exception exception)
+                    {
+
+                        download = false;
+                        output.close();
+
+                    }
+                }
+                catch (Exception exception)
+                {
+
+                    download = false;
+
+                }
+                finally
+                {
+                    input.close();
+                }
+            }
+            catch (Exception exception)
+            {
+                download = false;
+
+            }
+            return download;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(download)
+                Toast.makeText(getApplicationContext(), "Download successfull", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getApplicationContext(), "Download Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
