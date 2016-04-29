@@ -70,88 +70,6 @@ public class ClasesActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
-
-
-
-        for(int i=lenghtArraylist-1; i>0; i--){
-
-            if(arrayDias.get(i).getVisible()==1) {
-
-            }
-
-            //Creando LinearLayout (contenedor) para cada uno de los emprendedores
-            LinearLayout emprendedorLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            emprendedorLayout.setLayoutParams(params);
-            emprendedorLayout.setId(i);
-            emprendedorLayout.setOrientation(LinearLayout.VERTICAL);
-
-            //Creando ImageView para mostrar imagen de cada emprendedor
-            ImageView imagen = new ImageView(this);
-            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(400, 400);
-            imageParams.gravity=Gravity.CENTER_HORIZONTAL;
-            imageParams.bottomMargin=(int)getResources().getDimension(R.dimen.margen_emprendedor_imagen);
-            imageParams.topMargin=(int)getResources().getDimension(R.dimen.margen_emprendedor_imagen);
-            imagen.setLayoutParams(imageParams);
-            imagen.setId(i + 200);
-            imagen.getLayoutParams().height=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
-            imagen.getLayoutParams().width=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
-
-            //Agregando onClick listener
-            final Intent intento = new Intent(this, AudioClaseActivity.class);
-            imagen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(intento);
-                }
-            });
-
-
-
-
-            //Creando imagen circular dimamicamente
-            if(i!=3){
-                Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
-                RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
-                roundedBitmap.setCircular(true);
-                imagen.setImageDrawable(roundedBitmap);
-                emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
-            }else{
-                Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.play_red);
-                RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
-                roundedBitmap.setCircular(true);
-                imagen.setImageDrawable(roundedBitmap);
-                emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
-            }
-
-
-            //TextView Nombre Emprendedor
-            TextView textoNombre = new TextView(this);
-            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            textParams.gravity=Gravity.CENTER_HORIZONTAL;
-            textoNombre.setLayoutParams(textParams);
-            textoNombre.setTypeface(null, Typeface.BOLD);
-            textoNombre.setText("Prueba " + i);
-            textoNombre.setId(i + 500);
-            textoNombre.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            textoNombre.setTextColor(getResources().getColorStateList(R.color.textColorNombresClases));
-            textoNombre.setTypeface(Typeface.DEFAULT_BOLD);
-            emprendedorLayout.addView(textoNombre);
-
-            //TextView
-            TextView textoClases = new TextView(this);
-            LinearLayout.LayoutParams textClaseParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            textClaseParams.gravity=Gravity.CENTER_HORIZONTAL;
-            textClaseParams.bottomMargin=10;
-            textoClases.setLayoutParams(textClaseParams);
-            textoClases.setText("5/" + i);
-            textoClases.setTextColor(getResources().getColorStateList(R.color.textColorClases));
-            textoClases.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            emprendedorLayout.addView(textoClases);
-
-            listaDeClases.addView(emprendedorLayout);
-        }
     }
 
 
@@ -207,6 +125,7 @@ public class ClasesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(getApplicationContext(), arrayDias.get(lenghtArraylist-2).getTitle(), Toast.LENGTH_SHORT).show();
+            createListaClases(lenghtArraylist);
         }
     }
 
@@ -223,7 +142,7 @@ public class ClasesActivity extends AppCompatActivity {
                 directory.mkdir();
             }
             String fileName = "mySong" + ".mp3"; //song name that will be stored in your device in case of song
-//String fileName = "myImage" + ".jpeg"; in case of image
+            //String fileName = "myImage" + ".jpeg"; in case of image
             try
             {
                 InputStream input = null;
@@ -279,5 +198,86 @@ public class ClasesActivity extends AppCompatActivity {
         }
     }
 
+    private void createListaClases(int longitudLista){
+        LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 
+        for(int i=0; i<longitudLista; i++) {
+
+            if (arrayDias.get(i).getVisible() == 1) {
+
+                //Creando LinearLayout (contenedor) para cada uno de los emprendedores
+                LinearLayout emprendedorLayout = new LinearLayout(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                emprendedorLayout.setLayoutParams(params);
+                emprendedorLayout.setId(i);
+                emprendedorLayout.setOrientation(LinearLayout.VERTICAL);
+
+                //Creando ImageView para mostrar imagen de cada emprendedor
+                ImageView imagen = new ImageView(this);
+                LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(400, 400);
+                imageParams.gravity=Gravity.CENTER_HORIZONTAL;
+                imageParams.bottomMargin=(int)getResources().getDimension(R.dimen.margen_emprendedor_imagen);
+                imageParams.topMargin=(int)getResources().getDimension(R.dimen.margen_emprendedor_imagen);
+                imagen.setLayoutParams(imageParams);
+                imagen.setId(i + 200);
+                imagen.getLayoutParams().height=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
+                imagen.getLayoutParams().width=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
+
+                //Agregando onClick listener
+                final Intent intento = new Intent(this, AudioClaseActivity.class);
+                imagen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(intento);
+                    }
+                });
+
+
+
+
+                //Creando imagen circular dimamicamente
+                if(i!=3){
+                    Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
+                    RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
+                    roundedBitmap.setCircular(true);
+                    imagen.setImageDrawable(roundedBitmap);
+                    emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
+                }else{
+                    Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.play_red);
+                    RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
+                    roundedBitmap.setCircular(true);
+                    imagen.setImageDrawable(roundedBitmap);
+                    emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
+                }
+
+
+                //TextView Nombre Emprendedor
+                TextView textoNombre = new TextView(this);
+                LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                textParams.gravity=Gravity.CENTER_HORIZONTAL;
+                textoNombre.setLayoutParams(textParams);
+                textoNombre.setTypeface(null, Typeface.BOLD);
+                textoNombre.setText("Prueba " + arrayDias.get(i).getTitle());
+                textoNombre.setId(i + 500);
+                textoNombre.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                textoNombre.setTextColor(getResources().getColorStateList(R.color.textColorNombresClases));
+                textoNombre.setTypeface(Typeface.DEFAULT_BOLD);
+                emprendedorLayout.addView(textoNombre);
+
+                //TextView
+                TextView textoClases = new TextView(this);
+                LinearLayout.LayoutParams textClaseParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                textClaseParams.gravity=Gravity.CENTER_HORIZONTAL;
+                textClaseParams.bottomMargin=10;
+                textoClases.setLayoutParams(textClaseParams);
+                textoClases.setText(arrayDias.get(i).getVisible_clases()+"/" + i);
+                textoClases.setTextColor(getResources().getColorStateList(R.color.textColorClases));
+                textoClases.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                emprendedorLayout.addView(textoClases);
+
+                listaDeClases.addView(emprendedorLayout);
+
+            }
+        }
+    }
 }
