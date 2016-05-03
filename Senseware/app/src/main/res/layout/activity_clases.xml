@@ -1,81 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/barraSuperiorClases"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="10dp"
-        android:background="@android:color/white">
+        android:layout_height="60dp"
+        android:background="@android:color/white"
+        android:visibility="visible">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentStart="true"
+        <RelativeLayout
+            android:id="@+id/botonMenu"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_launcher"
-            android:layout_marginLeft="10dp" />
+            android:onClick="desplegarMenu"
+            android:visibility="visible">
 
             <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/ic_launcher" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/botonMenu2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@color/botonMenuActive"
+            android:onClick="desplegarMenu"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/ic_launcher" />
+
+        </RelativeLayout>
+
+
+        <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-                android:src="@mipmap/sw_black"
-                android:layout_marginTop="3dp" />
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/sw_black" />
 
     </RelativeLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollListaDeClases"
         android:layout_weight="1"
-        android:background="@android:color/white">
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/pantalla"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#FFFFFF"
             android:orientation="vertical"
-            android:id="@+id/listaDeClases"
-            android:background="@android:color/white">
-
+            android:visibility="gone">
 
         </LinearLayout>
 
+        <ScrollView
+            android:id="@+id/scrollListaDeClases"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:visibility="visible">
 
-    </ScrollView>
+            <LinearLayout
+                android:id="@+id/listaDeClases"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/layoutMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/botonMenuActive"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/botonMenuActive"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/correoCuenta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@color/botonMenuActive"
+                    android:text="prueba@ejemplo.com"
+                    android:textSize="25sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/botonMenuActive"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:background="@color/botonMenuActive"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="30dp"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="20dp"
+                        android:text="@string/nuevo_proyecto"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:background="@color/botonMenuActive"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="30dp"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="20dp"
+                        android:text="@string/nuevos_proyectos"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:background="@color/botonMenuActive"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="30dp"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="20dp"
+                        android:text="@string/cerrar_sesion"
+                        android:textSize="25sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="#333333"
         android:gravity="center_horizontal"
-        android:background="#333333">
+        android:orientation="vertical">
 
 
         <ImageButton
+            android:id="@+id/imageButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:id="@+id/imageButton"
-            android:src="@mipmap/menu_icon_clases"
-            android:background="#00ffffff"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp" />
+            android:background="#00ffffff"
+            android:src="@mipmap/menu_icon_clases" />
 
         <TextView
+            android:id="@+id/textoRespuestas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:text="Respuestas"
-            android:id="@+id/textoRespuestas"
             android:textColor="#9D9D9D"
-            android:textSize="18sp"
-            android:layout_marginBottom="5dp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

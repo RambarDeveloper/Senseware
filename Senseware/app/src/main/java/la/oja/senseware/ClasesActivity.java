@@ -1,11 +1,15 @@
 package la.oja.senseware;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -22,6 +26,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ActionMenuView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +53,8 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import la.oja.senseware.Modelo.Day;
 
@@ -56,6 +65,15 @@ public class ClasesActivity extends AppCompatActivity {
     int lenghtArraylist;
     Button buttonAdd;
     LinearLayout container;
+    LinearLayout layoutMenu;
+    Animation animationFadeIn;
+    ScrollView scrollListaClase;
+    RelativeLayout botonMenu;
+    RelativeLayout botonMenu2;
+    RelativeLayout barraSuperiorClases;
+    LinearLayout pantalla;
+    TranslateAnimation animate;
+    TranslateAnimation animate2;
 
     ArrayList<Day> arrayDias;//Arreglo para la informacion de los dias
 
@@ -65,12 +83,91 @@ public class ClasesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clases);
+        layoutMenu = (LinearLayout) findViewById(R.id.layoutMenu);
+        scrollListaClase = (ScrollView)findViewById((R.id.scrollListaDeClases));
+        animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        botonMenu = (RelativeLayout) findViewById(R.id.botonMenu);
+        botonMenu2 = (RelativeLayout) findViewById(R.id.botonMenu2);
+        barraSuperiorClases = (RelativeLayout) findViewById(R.id.barraSuperiorClases);
+        pantalla = (LinearLayout) findViewById(R.id.pantalla);
 
-        new HttpRequestGetData().execute();
 
         getSupportActionBar().hide();
 
+        new HttpRequestGetData().execute();
     }
+
+
+    public void desplegarMenu(View view) {
+
+
+
+        if(scrollListaClase.getVisibility()==View.VISIBLE){
+
+            showUp();
+
+
+        }else{
+
+            showDown();
+
+
+        }
+
+    }
+
+
+
+    private void showUp(){
+        animate2 = new TranslateAnimation(0,0, 0, scrollListaClase.getHeight());
+        animate2.setDuration(500);
+        animate2.setFillBefore(true);
+        scrollListaClase.startAnimation(animate2);
+        scrollListaClase.setVisibility(View.GONE);
+
+        animate = new TranslateAnimation(0,0, -layoutMenu.getHeight(), 0);
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        layoutMenu.startAnimation(animate);
+        layoutMenu.setVisibility(View.VISIBLE);
+        botonMenu.setVisibility(View.GONE);
+        botonMenu2.setVisibility(View.VISIBLE);
+    }
+
+
+
+    private void showDown(){
+        animate = new TranslateAnimation(0,0, 0, -layoutMenu.getHeight());
+        animate.setDuration(500);
+        animate.setFillBefore(true);
+        layoutMenu.startAnimation(animate);
+        layoutMenu.setVisibility(View.GONE);
+        animate.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                botonMenu.setVisibility(View.VISIBLE);
+                botonMenu2.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        animate2 = new TranslateAnimation(0,0, scrollListaClase.getHeight(), 0);
+        animate2.setDuration(500);
+        animate2.setFillAfter(true);
+        scrollListaClase.startAnimation(animate2);
+        scrollListaClase.setVisibility(View.VISIBLE);
+    }
+
+
 
 
     private class HttpRequestGetData extends AsyncTask<Void, Void, String> {
@@ -79,6 +176,7 @@ public class ClasesActivity extends AppCompatActivity {
             String result = "Nada";
             try
             {
+
                 // The connection URL
                 String url = "http://ojalab.com/senseware/api/day";
 
@@ -112,7 +210,6 @@ public class ClasesActivity extends AppCompatActivity {
                     dia.setVisible(jsonDia.getInt("visible"));
 
                     arrayDias.add(dia);
-
                 }
             }
             catch (Exception e)
@@ -122,82 +219,18 @@ public class ClasesActivity extends AppCompatActivity {
             return result;
         }
 
+
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), arrayDias.get(lenghtArraylist-2).getTitle(), Toast.LENGTH_SHORT).show();
             createListaClases(lenghtArraylist);
+
+
         }
     }
 
-    private class HttpRequestGetImages extends AsyncTask<String, Void, Boolean>{
 
-        boolean download = true;
 
-        @Override
-        protected Boolean doInBackground(String... params) {
-            File SDCardRoot = Environment.getExternalStorageDirectory(); // location where you want to store
-            File directory = new File(SDCardRoot, "/my_folder/"); //create directory to keep your downloaded file
-            if (!directory.exists())
-            {
-                directory.mkdir();
-            }
-            String fileName = "mySong" + ".mp3"; //song name that will be stored in your device in case of song
-            //String fileName = "myImage" + ".jpeg"; in case of image
-            try
-            {
-                InputStream input = null;
-                try{
-                    URL url = new URL("ASDA"); // link of the song which you want to download like (http://...)
-                    input = url.openStream();
-                    OutputStream output = new FileOutputStream(new File(directory, fileName));
-                    download = true;
-                    try {
-                        byte[] buffer = new byte[1024];
-                        int bytesRead = 0;
-                        while ((bytesRead = input.read(buffer, 0, buffer.length)) >= 0)
-                        {
-                            output.write(buffer, 0, bytesRead);
-                            download = true;
-                        }
-                        output.close();
-                    }
-                    catch (Exception exception)
-                    {
-
-                        download = false;
-                        output.close();
-
-                    }
-                }
-                catch (Exception exception)
-                {
-
-                    download = false;
-
-                }
-                finally
-                {
-                    input.close();
-                }
-            }
-            catch (Exception exception)
-            {
-                download = false;
-
-            }
-            return download;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            if(download)
-                Toast.makeText(getApplicationContext(), "Download successfull", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(getApplicationContext(), "Download Failed", Toast.LENGTH_SHORT).show();
-        }
-    }
-
+    //Metodo para crear los elementos de la GUI dinamicamente con info traida de la DB
     private void createListaClases(int longitudLista){
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 

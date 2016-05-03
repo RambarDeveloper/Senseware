@@ -20,4 +20,7 @@
     <string name="email">Correo Electronico</string>
     <string name="password">Contraseña</string>
     <string name="password_recovery">¿Olvidaste tu Contraseña?</string>
+    <string name="nuevo_proyecto">Nuevo proyecto</string>
+    <string name="cerrar_sesion">Cerrar sesion</string>
+    <string name="nuevos_proyectos">Mis proyectos</string>
 </resources>
