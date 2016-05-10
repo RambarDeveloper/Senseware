@@ -21,7 +21,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <VideoView
+
+
+            <com.google.android.youtube.player.YouTubePlayerView
+                android:id="@+id/youtube_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- <VideoView
                 android:id="@+id/video"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
@@ -29,7 +36,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"/> -->
 
         </RelativeLayout>
 
