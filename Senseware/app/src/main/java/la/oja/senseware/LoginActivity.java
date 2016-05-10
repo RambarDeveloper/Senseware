@@ -3,6 +3,7 @@ package la.oja.senseware;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -75,7 +77,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == R.id.login || id == EditorInfo.IME_ACTION_SEND) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mPasswordView.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                     attemptLogin();
                     return true;
                 }
@@ -93,6 +97,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        TextView mSignInLink = (TextView) findViewById(R.id.textCrearCuenta);
+        TextView mForgetLink = (TextView) findViewById(R.id.textPasswordRecovery);
+
+
     }
 
     private void populateAutoComplete() {
@@ -204,12 +213,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+       // return email.contains("@");
+        return  android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+       // return password.length() > 4;
+        boolean valid = true;
+
+        if((password.indexOf('\'') >= 0 || password.indexOf('"') >= 0))
+            valid = false;
+
+        return valid;
     }
 
     /**
