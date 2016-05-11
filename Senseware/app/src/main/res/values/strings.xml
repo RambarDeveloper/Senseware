@@ -17,11 +17,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="email">Correo Electronico</string>
+    <string name="email">Correo Electrónico</string>
     <string name="password">Contraseña</string>
     <string name="password_recovery">¿Olvidaste tu Contraseña?</string>
     <string name="nuevo_proyecto">Nuevo proyecto</string>
-    <string name="cerrar_sesion">Cerrar sesion</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="nuevos_proyectos">Mis proyectos</string>
 
 
@@ -30,4 +30,17 @@
     <string name="player_error">Error initializing YouTube player</string>
     <string name="seek_to">Jump To</string>
     <string name="seek_to_hint">Seconds</string>
+
+    <!-- String errors -->
+    <string name="error_required">Este campo es requerido</string>
+    <string name="error_email">El email ingresado es invalido</string>
+    <string name="error_pswd">Invalida contraseña, no puede contener comillas</string>
+    <string name="error_pswd_short">La contraseña es muy corta</string>
+
+    <!-- URL production environment -->
+    <string name="urlAPI">http://ojalab.com/senseware/api2/</string>
+
+    <!-- URL developer environment
+    <string name="urlAPI">http://ojalab.com/s2/api/</string> -->
+
 </resources>

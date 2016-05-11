@@ -27,6 +27,7 @@ public class User {
     private int unsubscribe;
     private int check_email;
     private int check_whatsapp;
+    private boolean hasSuscriptionActive;
 
 
     public int getId_user() {
@@ -111,6 +112,10 @@ public class User {
 
     public String getMentor(){
         return this.mentor;
+    }
+
+    public boolean getHasSuscriptionActive() {
+        return this.hasSuscriptionActive;
     }
 
     public void setId_user(int id_user)
@@ -220,6 +225,11 @@ public class User {
 
     public void setCheck_whatsapp(int check_whatsapp){
         this.check_whatsapp = check_whatsapp;
+        return;
+    }
+
+    public void setHasSuscriptionActive(boolean hasSuscriptionActive){
+        this.hasSuscriptionActive = hasSuscriptionActive;
         return;
     }
 }

@@ -21,85 +21,117 @@
         android:visibility="gone" />
 
 
+    <LinearLayout
+        android:id="@+id/email_login_form"
+        android:layout_width="349dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/sw_black"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/accent" />
+            <ImageButton
+                android:id="@+id/email_clear"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="-8dp"
+                android:layout_gravity="right|top"
+                android:background="@android:color/transparent"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:visibility="gone"
+                android:src="@mipmap/crossx2"
+                android:layout_marginBottom="5dp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionSend"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/accent" />
+            <ImageButton
+                android:id="@+id/password_clear"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="-8dp"
+                android:layout_gravity="right|top"
+                android:background="@android:color/transparent"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:visibility="gone"
+                android:src="@mipmap/crossx2"
+                android:layout_marginBottom="5dp" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/email_sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/iniciar_sesion"
+            android:background="@color/btn"
+            android:textColor="@color/btnFont"
+            android:clickable="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPasswordRecovery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/password_recovery"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/textCrearCuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:text="¿No tienes una cuenta? Creala aqui" />
+
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="349dp"
+        android:layout_height="521dp"
         android:layout_marginLeft="@dimen/hmargin_iniciar_sesion"
         android:layout_marginRight="@dimen/hmargin_iniciar_sesion"
         android:layout_marginTop="40dp">
 
-        <LinearLayout
-            android:id="@+id/email_login_form"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/logo_ojala_white"/>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionSend"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/iniciar_sesion"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textPasswordRecovery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:text="@string/password_recovery" />
-
-            <TextView
-                android:id="@+id/textCrearCuenta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:text="¿No tienes una cuenta? Creala aqui" />
-
-        </LinearLayout>
     </ScrollView>
 
     <TextView
