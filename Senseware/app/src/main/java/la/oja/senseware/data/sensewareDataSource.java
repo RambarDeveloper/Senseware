@@ -2,6 +2,9 @@ package la.oja.senseware.data;
 
 import android.provider.BaseColumns;
 
+import static la.oja.senseware.data.sensewareDataSource.Campaign.*;
+
+
 /**
  * Created by jcoaks on 11/12/2015.
  */
@@ -97,6 +100,36 @@ public final class sensewareDataSource {
                     Result.COLUMN_NAME_HIDDEN + INTEGER_TYPE +
                     ")";
 
+    public static final String SQL_CREATE_CAMPAING =
+            "CREATE TABLE " + Campaign.TABLE_NAME + "( " +
+                    Campaign._ID + " INTEGER PRMARY KEY, "+
+                    Campaign.COLUMN_NAME_ID_CAMPAIGN + INTEGER_TYPE + COMMA_SEP +
+                    Campaign.COLUMN_NAME_CAMPAIGN + TEXT_TYPE + COMMA_SEP +
+                    Campaign.COLUMN_NAME_TYPE + TEXT_TYPE + COMMA_SEP +
+                    Campaign.COLUMN_NAME_ACIVE + INTEGER_TYPE +
+            ")" ;
+
+    public static final String SQL_CREATE_USER_CAMPAIGN =
+            "CREATE TABLE " + UserCampaign.TABLE_NAME + "(" +
+                    UserCampaign._ID + "INTEGER PRIMARY KEY, " +
+                    UserCampaign.COLUMN_NAME_ID_UCAMP + INTEGER_TYPE + COMMA_SEP +
+                    UserCampaign.COLUMN_NAME_ID_USER + INTEGER_TYPE + COMMA_SEP +
+                    UserCampaign.COLUMN_NAME_ID_CAMPAIGN + INTEGER_TYPE + COMMA_SEP +
+                    UserCampaign.COLUMN_NAME_ACTIVE + INTEGER_TYPE +
+                    ")";
+
+    public static final String SQL_CREATE_NOTIFICATION =
+            "CREATE TABLE "+ Notification.TABLE_NAME + "(" +
+                    Notification._ID + "INTEGER PRIMARY KEY, " +
+                    Notification.COLUMN_NAME_ID_NOTIFICATION + INTEGER_TYPE + COMMA_SEP +
+                    Notification.COLUMN_NAME_ID_UCAMPAIGN + INTEGER_TYPE + COMMA_SEP +
+                    Notification.COLUMN_NAME_ID_SERVICE + TEXT_TYPE + COMMA_SEP +
+                    Notification.COLUMN_NAME_DATE + TEXT_TYPE + COMMA_SEP +
+                    Notification.COLUMN_NAME_VIEWED + INTEGER_TYPE +
+                    ")";
+
+
+
     /* Inner class that defines the table */
     public static abstract class User implements BaseColumns {
         public static final String TABLE_NAME = "user";
@@ -186,6 +219,32 @@ public final class sensewareDataSource {
         public static final String COLUMN_NAME_HIDDEN = "hidden";
         public static final String COLUMN_NAME_ID_RESULT = "id_result";
         public static final String COLUMN_NAME_PUBLICO = "publico";
+    }
+
+    public static abstract class Campaign implements BaseColumns {
+        public static final  String TABLE_NAME = "campaign";
+        public static final String COLUMN_NAME_ID_CAMPAIGN = "id_campaign";
+        public static final String COLUMN_NAME_CAMPAIGN = "campaign";
+        public static final String COLUMN_NAME_TYPE = "type";
+        public static final String COLUMN_NAME_ACIVE = "active";
+    }
+
+    public static abstract class UserCampaign implements BaseColumns{
+        public static final String TABLE_NAME = "user_campaign";
+        public static final String COLUMN_NAME_ID_UCAMP = "id_ucamp";
+        public static final String COLUMN_NAME_ID_USER = "id_user";
+        public static final String COLUMN_NAME_ID_CAMPAIGN = "id_campaign";
+        public static final String COLUMN_NAME_ACTIVE = "active";
+
+    }
+
+    public static abstract class Notification implements BaseColumns{
+        public static final String TABLE_NAME = "notification";
+        public static final String COLUMN_NAME_ID_NOTIFICATION = "id_notification";
+        public static final String COLUMN_NAME_ID_UCAMPAIGN = "id_ucampaign";
+        public static final String COLUMN_NAME_ID_SERVICE = "id_service";
+        public static final String COLUMN_NAME_DATE = "date";
+        public static final String COLUMN_NAME_VIEWED = "viewed";
     }
 
     public static final String ALTER_LESSONS_COUNTBACK =
