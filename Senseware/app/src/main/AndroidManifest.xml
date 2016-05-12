@@ -45,6 +45,8 @@
             android:name=".LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
