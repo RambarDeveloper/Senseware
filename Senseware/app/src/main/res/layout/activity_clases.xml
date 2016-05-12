@@ -80,7 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/white"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/listaDeClases"
@@ -102,7 +102,7 @@
             android:layout_weight="1"
             android:background="@color/botonMenuActive"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,7 +161,8 @@
                         android:paddingLeft="30dp"
                         android:paddingTop="20dp"
                         android:text="@string/cerrar_sesion"
-                        android:textSize="25sp" />
+                        android:textSize="25sp"
+                        android:onClick="logout"/>
                 </LinearLayout>
 
             </LinearLayout>

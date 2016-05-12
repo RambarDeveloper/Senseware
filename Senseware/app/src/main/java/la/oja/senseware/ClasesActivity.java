@@ -6,7 +6,9 @@ import android.animation.ValueAnimator;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -57,6 +59,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import la.oja.senseware.Modelo.Day;
+import la.oja.senseware.data.sensewareDataSource;
+import la.oja.senseware.data.sensewareDbHelper;
 
 public class ClasesActivity extends AppCompatActivity {
     EditText textIn;
@@ -167,7 +171,38 @@ public class ClasesActivity extends AppCompatActivity {
         scrollListaClase.setVisibility(View.VISIBLE);
     }
 
+    public void logout(View view) {
+        final SharedPreferences settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
+        final SharedPreferences.Editor editor = settings.edit();
 
+        editor.remove("id_user");
+        editor.remove("email");
+        editor.remove("phone");
+        editor.remove("nextDay");
+        editor.remove("vioclase");
+        editor.remove("newProject");
+        editor.remove("current");
+        editor.remove("day");
+        editor.remove("max_day");
+        editor.remove("max_current");
+        editor.commit();
+
+        sensewareDbHelper sDbHelper = new sensewareDbHelper(getApplicationContext());
+        SQLiteDatabase db = sDbHelper.getWritableDatabase();
+
+        db.delete(sensewareDataSource.Result.TABLE_NAME, null, null);
+        db.delete(sensewareDataSource.Project.TABLE_NAME, null, null);
+        db.delete(sensewareDataSource.History.TABLE_NAME, null, null);
+        db.delete(sensewareDataSource.User.TABLE_NAME, null, null);
+
+        db.close();
+
+        this.finish();
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 
 
     private class HttpRequestGetData extends AsyncTask<Void, Void, String> {
