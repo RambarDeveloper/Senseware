@@ -24,6 +24,9 @@ public class sensewareDbHelper extends SQLiteOpenHelper {
         db.execSQL(sensewareDataSource.SQL_CREATE_HISTORY);
         db.execSQL(sensewareDataSource.SQL_CREATE_HOOKS);
         db.execSQL(sensewareDataSource.SQL_CREATE_PROJECT);
+        db.execSQL(sensewareDataSource.SQL_CREATE_CAMPAING);
+        db.execSQL(sensewareDataSource.SQL_CREATE_USER_CAMPAIGN);
+        db.execSQL(sensewareDataSource.SQL_CREATE_NOTIFICATION);
 
         db.execSQL(sensewareDataSource.ALTER_LESSONS_COUNTBACK);
         db.execSQL(sensewareDataSource.ALTER_LESSON_GROUP);
@@ -35,6 +38,7 @@ public class sensewareDbHelper extends SQLiteOpenHelper {
         db.execSQL(sensewareDataSource.ALTER_LESSON_AUDIO);
         db.execSQL(sensewareDataSource.ALTER_RESULT_PUBLICO);
         db.execSQL(sensewareDataSource.ALTER_PROJECT);
+
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -64,6 +68,9 @@ public class sensewareDbHelper extends SQLiteOpenHelper {
             db.execSQL(sensewareDataSource.ALTER_LESSON_AUDIO);
             db.execSQL(sensewareDataSource.ALTER_RESULT_PUBLICO);
             db.execSQL(sensewareDataSource.ALTER_PROJECT);
+            db.execSQL(sensewareDataSource.SQL_CREATE_CAMPAING);
+            db.execSQL(sensewareDataSource.SQL_CREATE_USER_CAMPAIGN);
+            db.execSQL(sensewareDataSource.SQL_CREATE_NOTIFICATION);
         }
     }
 

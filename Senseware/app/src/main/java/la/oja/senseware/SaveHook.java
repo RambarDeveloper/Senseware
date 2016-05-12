@@ -70,7 +70,7 @@ public class SaveHook {
                             String url = c.getString(5);
                             String hook = c.getString(1);
 
-                            if (url.equals(context.getString(R.string.urlAPI) +"project") && method.equals("POST")) {
+                            if (url.equals(Config.URL_API +"project") && method.equals("POST")) {
                                 data = getNewData(data, true, id_project);
 
                             }
@@ -114,7 +114,7 @@ public class SaveHook {
 
                                     //if the hook to process is new project
 
-                                    if (url.equals(context.getString(R.string.urlAPI) +"project")) {
+                                    if (url.equals(Config.URL_API +"project")) {
                                         JSONObject result = new JSONObject(obj.get("result").toString());
                                         id_project = result.getInt("id_project");
                                         String na_project = result.getString("na_project");
@@ -124,7 +124,7 @@ public class SaveHook {
                                         //new HttpRequestSendHooks();
 
                                     }
-                                    if(url.equals(context.getString(R.string.urlAPI) +"result")) {
+                                    if(url.equals(Config.URL_API +"result")) {
                                         JSONObject result = new JSONObject(obj.get("result").toString());
                                         int id_result = result.getInt("id_result");
                                         int project = result.getInt("id_project");
