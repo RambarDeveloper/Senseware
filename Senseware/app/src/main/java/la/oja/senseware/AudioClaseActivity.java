@@ -3,6 +3,9 @@ package la.oja.senseware;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,6 +16,7 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.media.MediaPlayer;
@@ -22,6 +26,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StatFs;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +42,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -47,6 +54,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import la.oja.senseware.Modelo.Lesson;
+import la.oja.senseware.data.sensewareDataSource;
+import la.oja.senseware.data.sensewareDbHelper;
 
 
 public class AudioClaseActivity extends Activity {
@@ -82,9 +92,11 @@ public class AudioClaseActivity extends Activity {
     //Subtitulo
     private RelativeLayout subtituloContenedor;
     private File myDir;
-    String fileName, imageUrl;
+    String fileName, imageUrl, utms;
     ProgressDialog progress;
     Lesson current;
+    int count_seconds;
+    ApiCall call;
 
     //Opciones
     SharedPreferences settings;
@@ -94,6 +106,8 @@ public class AudioClaseActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_clase);
         settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
+        call = new ApiCall(getApplicationContext());
+        getUtms();
 
         //Elementos layout audio
         subtituloContenedor = (RelativeLayout) findViewById(R.id.subtituloContenedor);
@@ -121,7 +135,8 @@ public class AudioClaseActivity extends Activity {
         //Creando nuevo hilo
         //videoThread = new Thread();
         //videoThread.start();
-        current
+        current = null;//Obtener lesson;
+
         String email = settings.getString("email", "");
         int day = settings.getInt("day", 1);
         int pos = settings.getInt("current", 1);
@@ -144,6 +159,30 @@ public class AudioClaseActivity extends Activity {
 
         startButton.performClick();
 
+    }
+
+    private void getUtms(){
+        String utm_source = settings.getString("utm_source", "");
+        String utm_medium = settings.getString("utm_medium", "");
+        String utm_term = settings.getString("utm_term", "");
+        String utm_content = settings.getString("utm_content", "");
+        String utm_campaign = settings.getString("utm_campaign", "");
+
+        SharedPreferences prefs = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        int version = prefs.getInt("appVersion", 0);
+
+        utms = "app : 'Android', ";
+        utms += "'version': "+version;
+        if(utm_source.compareTo("") != 0)
+            utms += ", 'utm_source': '" + utm_source + "'";
+        if(utm_medium.compareTo("") != 0)
+            utms += ", 'utm_medium': '" + utm_medium + "'";
+        if(utm_term.compareTo("") != 0)
+            utms += ", 'utm_term': '" + utm_term + "'";
+        if(utm_content.compareTo("") != 0)
+            utms += ", 'utm_content': '" + utm_content + "'";
+        if(utm_campaign.compareTo("") != 0)
+            utms += ", 'utm_campaign': '" + utm_campaign + "'";
     }
 
     //Configurando los Listeners para los elementos (Views) de la actividad
@@ -586,15 +625,10 @@ public class AudioClaseActivity extends Activity {
                 mp.start();
             }
 
-            if(mp!=null) {
+            if(mp != null) {
 
                 if(mp.isPlaying())
                     displayNotification();
-
-                final ImageButton[] play = {(ImageButton) findViewById(R.id.play)};
-                ImageButton pause = (ImageButton) findViewById(R.id.pause);
-                play[0].setVisibility(View.GONE);
-                pause.setVisibility(View.VISIBLE);
 
                 // And From your main() method or any other method
                 countDown = new CountDownTimer(count_seconds * 1000, 1000) {
@@ -605,14 +639,14 @@ public class AudioClaseActivity extends Activity {
                         count_seconds--;
                         int play_seconds = current.getSeconds() - count_seconds;
                         SharedPreferences settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
-                        final EditText textbox = (EditText) findViewById(R.id.textbox);
+                        final EditText textbox = (EditText) findViewById(R.id.respuesta);
                         if (play_seconds == current.getSectitle()) {
                             TextView title = (TextView) findViewById(R.id.title);
                             title.setText(current.getSubtitle());
                         }
 
                         if (current.getTextfield() == 0 && count_seconds == 1) {
-                            upgradeCurrent();
+                            //upgradeCurrent();
 
                             if (mp.isPlaying()) {
                                 mp.stop();
@@ -633,8 +667,8 @@ public class AudioClaseActivity extends Activity {
                             values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
                             insertEvent("Hook", values_event);
 
-                            //add share
-                            if (changeDay) {
+                            //Fin del dia
+                            /*if (changeDay) {
 
                                 urlEvent = getString(R.string.urlAPI) + "event/Terminodia" + day;
 
@@ -647,13 +681,13 @@ public class AudioClaseActivity extends Activity {
                                 values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
                                 insertEvent("Hook", values_event);
 
-                                Intent in = new Intent(LessonActivity.this, ShareActivity.class);
+                                Intent in = new Intent(AudioClaseActivity.this, ShareActivity.class);
                                 startActivity(in);
-                            }
+                            }*/
 
 
                             finish();
-                            LessonActivity.this.finish();
+                            AudioClaseActivity.this.finish();
 
                         }
 
@@ -661,14 +695,15 @@ public class AudioClaseActivity extends Activity {
                         int moment = current.getSectextfield();
                         int select_text = current.getSelect_text();
 
-                        if (textfieltype > 0 && moment > 2 && play_seconds == moment) {
-                            TextView countdown = (TextView) findViewById(R.id.countdown);
-                            TextView countdown2 = (TextView) findViewById(R.id.countdown2);
-                            TextView pos = (TextView) findViewById(R.id.position);
+                        if (textfieltype > 0 && moment > 2 && play_seconds == moment)
+                        {
+                            TextView countdown = (TextView) findViewById(R.id.tiempoCuenta);
+                            /*TextView pos = (TextView) findViewById(R.id.position);
 
                             ImageButton play = (ImageButton) findViewById(R.id.play);
                             ImageButton pause = (ImageButton) findViewById(R.id.pause);
-                            Button finish = (Button) findViewById(R.id.finish);
+                            Button finish = (Button) findViewById(R.id.finish);*/
+
                             TextView title = (TextView) findViewById(R.id.title);
                             String titleText = title.getText().toString();
                             if (select_text == 0 && textfieltype == 1) {
@@ -702,14 +737,14 @@ public class AudioClaseActivity extends Activity {
                             }
 
                             title.setVisibility(View.GONE);
-                            pos.setVisibility(View.GONE);
+                            //pos.setVisibility(View.GONE);
                             countdown.setTextSize(50);
                             countdown.setTop(-180);
                             countdown.setVisibility(View.GONE);
-                            countdown2.setVisibility(View.VISIBLE);
-                            play.setVisibility(View.GONE);
-                            pause.setVisibility(View.GONE);
-                            finish.setVisibility(View.VISIBLE);
+                            //countdown2.setVisibility(View.VISIBLE);
+                            //play.setVisibility(View.GONE);
+                            //pause.setVisibility(View.GONE);
+                            //finish.setVisibility(View.VISIBLE);
                             textbox.setVisibility(View.VISIBLE);
 
                             textbox.setCursorVisible(true);
@@ -720,11 +755,9 @@ public class AudioClaseActivity extends Activity {
                             ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(textbox, InputMethodManager.SHOW_FORCED);
                         }
 
-                        TextView cd = (TextView) findViewById(R.id.countdown);
+                        TextView cd = (TextView) findViewById(R.id.tiempoCuenta);
                         cd.setText(getDurationString(count_seconds));
-
-                        TextView cd2 = (TextView) findViewById(R.id.countdown2);
-                        cd2.setText(getDurationString(count_seconds));
+;
                         //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
 
                         // InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -847,5 +880,219 @@ public class AudioClaseActivity extends Activity {
             newRowId = db.insert(sensewareDataSource.History.TABLE_NAME, null, values_hook);
         }
         db.close();
+    }
+
+
+    private String getResult(String getback)
+    {
+        String respuesta = "";
+        Cursor c = null;
+
+        String ids_lesson[] = getback.split(" ");
+
+        int id_project = settings.getInt("id_project", 0);
+
+        try
+        {
+            sensewareDbHelper sDbHelper = new sensewareDbHelper(getApplicationContext());
+            SQLiteDatabase db = sDbHelper.getWritableDatabase();
+
+            for (int i = 0; i < ids_lesson.length; i++) {
+
+                final String MY_QUERY = "SELECT " + sensewareDataSource.Result.COLUMN_NAME_RESULT +
+                        " FROM " + sensewareDataSource.Result.TABLE_NAME + " r " +
+                        " WHERE id_lesson=? AND " + sensewareDataSource.Result.COLUMN_NAME_ID_PROJECT +" =? "+
+                        "ORDER BY "+ sensewareDataSource.Result.COLUMN_NAME_DATE +" DESC";
+
+                c = db.rawQuery(MY_QUERY, new String[]{ids_lesson[i], String.valueOf(id_project)});
+                if (c.moveToFirst()) {
+                    Log.i("value", ids_lesson[i]);
+                    if(i > 0 ){
+                        if(Integer.valueOf(ids_lesson[i]) != 392 && Integer.valueOf(ids_lesson[i]) != 394)
+                            respuesta = respuesta + " | ";
+                        else
+                            respuesta = respuesta + ", ";
+                    }
+
+                    respuesta += c.getString(0);
+                }
+                else{
+
+                    try
+                    {
+                        String url = getString(R.string.urlAPI) + "getResultByLesson/" +ids_lesson[i];
+                        String resp = call.callGet(url);
+
+                        //convert the response from string to JsonObject
+                        JSONObject obj = new JSONObject(resp);
+                        int status = obj.getInt("status");
+                        String message = obj.getString("message");
+
+                        if (status == 200 && message.equals("OK")) {
+                            String result = obj.getString("result");
+
+                            respuesta += " | " + result;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            c.close();
+            db.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+        return respuesta;
+    }
+
+    public void displayNotification(){
+
+        // Use NotificationCompat.Builder to set up our notification.
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        //icon appears in device notification bar and right hand corner of notification
+        builder.setSmallIcon(R.mipmap.sw_white);
+
+        //sound
+        // builder.setDefaults(NotificationDefaults.Sound)
+
+        // This intent is fired when notification is clicked
+        Intent intent2 = new Intent(this, AudioClaseActivity.class);
+        // intent2.addFlags( Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent2, 0);
+
+
+        // Set the intent that will fire when the user taps the notification.
+        builder.setContentIntent(pendingIntent);
+
+        // Large icon appears on the left of the notification
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+
+        // Content title, which appears in large type at the top of the notification
+        builder.setContentTitle("Senseware");
+
+        // Content text, which appears in smaller text below the title
+        builder.setContentText("Actualmente tienes una leccion activa");
+
+        // The subtext, which appears under the text on newer devices.
+        // This will show-up in the devices with Android 4.2 and above only
+        builder.setSubText("Estas realizando la actividad "+ current.getPosition());
+
+        builder.setAutoCancel(true);
+
+        Notification notification = builder.build();
+        // notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        // Will display the notification in the notification bar
+        notificationManager.notify(current.getPosition(), notification);
+
+
+    }
+
+    public void closeNotification(){
+
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(current.getPosition());
+
+    }
+
+    private String getDurationString(int seconds) {
+
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        seconds = seconds % 60;
+
+        return twoDigitString(minutes) + ":" + twoDigitString(seconds);
+    }
+
+    private String twoDigitString(int number) {
+        if (number == 0) {
+            return "00";
+        }
+        if (number / 10 == 0) {
+            return "0" + number;
+        }
+        return String.valueOf(number);
+    }
+
+
+    private String getResumen()
+    {
+        String respuestas[] = new String[5];
+
+        sensewareDbHelper sDbHelper = new sensewareDbHelper(getApplicationContext());
+        SQLiteDatabase db = sDbHelper.getWritableDatabase();
+
+        Cursor c = null;
+        Project[]  projectsBD = null;
+
+        int i = 0;
+
+        try
+        {
+            String[] projection = { sensewareDataSource.Result.COLUMN_NAME_ID_LESSON, sensewareDataSource.Result.COLUMN_NAME_RESULT };
+            String whereColProd = sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 200 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 201 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 202 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 203 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 204";
+
+            String whereColPrueba = sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 173 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 174 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 175 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 176 OR " +
+                    sensewareDataSource.Result.COLUMN_NAME_ID_LESSON + " = 177";
+
+            String order = sensewareDataSource.Result.COLUMN_NAME_DATE + " DESC";
+
+            c = db.query(
+                    sensewareDataSource.Result.TABLE_NAME,      // The table to query
+                    projection,                                 // The columns to return
+                    whereColProd,                                   // The columns for the WHERE clause
+                    null,                                       // The values for the WHERE clause
+                    null,                                       // don't group the rows
+                    null,                                       // don't filter by row groups
+                    order                                        // The sort order
+            );
+
+            if (c.moveToFirst())
+            {
+                do {
+                    respuestas[i] = c.getString(1);
+                    i++;
+                    if(i == 5)
+                        break;
+                } while (c.moveToNext());
+
+                c.close();
+                db.close();
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        String resumen = "Debes completar la actividad";
+        if(i == 5) {
+            resumen = respuestas[4] + " esta diseñado para " +
+                    respuestas[3] + ", resuelve el problema " +
+                    respuestas[2] + ", " +
+                    respuestas[0] + " para " +
+                    respuestas[1];
+        }
+        return resumen;
     }
 }
