@@ -38,6 +38,7 @@
     <string name="error_pswd">Invalida contraseña, no puede contener comillas</string>
     <string name="error_pswd_short">La contraseña es muy corta</string>
     <string name="error_empty_project">El nombre del proyecto no puede estar vacio</string>
-
+    <string name="error_edit_project">No has cambiado el nombre del proyecto</string>
+    <string name="clear_cache">Limpiar cache</string>
 
 </resources>

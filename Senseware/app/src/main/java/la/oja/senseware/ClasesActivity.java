@@ -93,7 +93,7 @@ public class ClasesActivity extends AppCompatActivity {
         botonMenu = (RelativeLayout) findViewById(R.id.botonMenu);
         botonMenu2 = (RelativeLayout) findViewById(R.id.botonMenu2);
         barraSuperiorClases = (RelativeLayout) findViewById(R.id.barraSuperiorClases);
-       
+
         getSupportActionBar().hide();
 
         new HttpRequestGetData().execute();
@@ -204,13 +204,13 @@ public class ClasesActivity extends AppCompatActivity {
     }
 
     public void newProject(View view) {
-        Intent intent = new Intent(getApplicationContext(), NewProjectActivity.class);
+        Intent intent = new Intent(getBaseContext(), NewProjectActivity.class);
         startActivity(intent);
     }
 
     public void myProjects(View view) {
-       // Intent intent = new Intent(getApplicationContext(), MyProjectsActivity.class);
-       // startActivity(intent);
+        Intent intent = new Intent(getBaseContext(), MyProjectsActivity.class);
+        startActivity(intent);
     }
 
     public void myHistory(View view) {
