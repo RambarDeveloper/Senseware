@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -89,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private ImageButton btnEmail;
     private ImageButton btnPsw;
+    ApiCall call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +131,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         TextView mSignInLink = (TextView) findViewById(R.id.textCrearCuenta);
         TextView mForgetLink = (TextView) findViewById(R.id.textPasswordRecovery);
+
+        Typeface ultralight= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Display-Ultralight.ttf");
+        Typeface light= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Text-Light.ttf");
+        Typeface thin= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Display-Thin.ttf");
+        Typeface regular= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Text-Regular.ttf");
+
+        mEmailView.setTypeface(thin);
+        mPasswordView.setTypeface(thin);
+
+        mSignInLink.setTypeface(ultralight);
+        mForgetLink.setTypeface(ultralight);
+        mEmailSignInButton.setTypeface(thin);
 
         GCMClientManager pushClientManager = new GCMClientManager(this, PROJECT_NUMBER);
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
@@ -320,7 +334,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         }
 
-
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_required));
@@ -492,19 +505,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 HttpHeaders requestHeaders = new HttpHeaders();
                 requestHeaders.setAuthorization(authHeader);
 
-                // Sending multipart/form-data
-                requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-                requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-
-                HttpEntity<String> entity = new HttpEntity<String>(data, requestHeaders);
-
-                // Create a new RestTemplate instance
-                RestTemplate restTemplate = new RestTemplate();
-                // restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-
-                String resp = response.getBody();
-
+                call = new ApiCall(mEmail, mPassword);
+                String resp = call.callPost(url, data);
 
                 //convert the response from string to JsonObject
                 JSONObject info = new JSONObject(resp);
