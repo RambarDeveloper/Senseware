@@ -37,6 +37,7 @@
     <string name="error_email">El email ingresado es invalido</string>
     <string name="error_pswd">Invalida contraseña, no puede contener comillas</string>
     <string name="error_pswd_short">La contraseña es muy corta</string>
+    <string name="error_empty_project">El nombre del proyecto no puede estar vacio</string>
 
 
 </resources>

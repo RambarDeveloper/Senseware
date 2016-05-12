@@ -93,9 +93,7 @@ public class ClasesActivity extends AppCompatActivity {
         botonMenu = (RelativeLayout) findViewById(R.id.botonMenu);
         botonMenu2 = (RelativeLayout) findViewById(R.id.botonMenu2);
         barraSuperiorClases = (RelativeLayout) findViewById(R.id.barraSuperiorClases);
-        pantalla = (LinearLayout) findViewById(R.id.pantalla);
-
-
+       
         getSupportActionBar().hide();
 
         new HttpRequestGetData().execute();
@@ -206,8 +204,8 @@ public class ClasesActivity extends AppCompatActivity {
     }
 
     public void newProject(View view) {
-      //  Intent intent = new Intent(getApplicationContext(), NewProjectActivity.class);
-      //  startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), NewProjectActivity.class);
+        startActivity(intent);
     }
 
     public void myProjects(View view) {
