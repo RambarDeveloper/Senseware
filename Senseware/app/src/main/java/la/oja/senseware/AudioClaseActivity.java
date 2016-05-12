@@ -55,6 +55,7 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import la.oja.senseware.Modelo.Lesson;
+import la.oja.senseware.Modelo.Project;
 import la.oja.senseware.data.sensewareDataSource;
 import la.oja.senseware.data.sensewareDbHelper;
 
@@ -135,7 +136,8 @@ public class AudioClaseActivity extends Activity {
         //Creando nuevo hilo
         //videoThread = new Thread();
         //videoThread.start();
-        current = null;//Obtener lesson;
+
+        this.current = ClasesActivity.getCurrent();
 
         String email = settings.getString("email", "");
         int day = settings.getInt("day", 1);
@@ -577,7 +579,7 @@ public class AudioClaseActivity extends Activity {
         final String date = sdf.format(c.getTime());
 
         if(pos==1){
-            String urlEvent = getString(R.string.urlAPI) + "event/Empezodia"+day;
+            String urlEvent = Config.URL_API + "event/Empezodia"+day;
             String dataEvent = "{email: '" + email + "', values: [{" + utms + "}]}";
 
             ContentValues values_event = new ContentValues();
@@ -608,7 +610,7 @@ public class AudioClaseActivity extends Activity {
                 mp.start();
 
 
-                String urlEvent = getString(R.string.urlAPI) + "event/Empezoclase";
+                String urlEvent = Config.URL_API + "event/Empezoclase";
                 String dataEvent = "{email: '" + email + "', 'id_lesson': '"+ current.getId_lesson() +  "', values: [{" + utms + "}]}";
 
                 ContentValues values_event = new ContentValues();
@@ -655,7 +657,7 @@ public class AudioClaseActivity extends Activity {
                             //((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
 
-                            String urlEvent = getString(R.string.urlAPI) + "event/Terminoclase";
+                            String urlEvent = Config.URL_API + "event/Terminoclase";
                             String dataEvent = "{email: '" + email + "', values: [{day: '" + day + "', clase: '" + pos + "', " + utms + "}]}";
 
                             ContentValues values_event = new ContentValues();
@@ -670,7 +672,7 @@ public class AudioClaseActivity extends Activity {
                             //Fin del dia
                             /*if (changeDay) {
 
-                                urlEvent = getString(R.string.urlAPI) + "event/Terminodia" + day;
+                                urlEvent = getString(Config.URL_API) + "event/Terminodia" + day;
 
                                 values_event = new ContentValues();
                                 values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATA, dataEvent);
@@ -920,7 +922,7 @@ public class AudioClaseActivity extends Activity {
 
                     try
                     {
-                        String url = getString(R.string.urlAPI) + "getResultByLesson/" +ids_lesson[i];
+                        String url = Config.URL_API + "getResultByLesson/" +ids_lesson[i];
                         String resp = call.callGet(url);
 
                         //convert the response from string to JsonObject
