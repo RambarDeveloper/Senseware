@@ -59,6 +59,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import la.oja.senseware.Modelo.Day;
+import la.oja.senseware.Modelo.Lesson;
 import la.oja.senseware.data.sensewareDataSource;
 import la.oja.senseware.data.sensewareDbHelper;
 
@@ -78,6 +79,8 @@ public class ClasesActivity extends AppCompatActivity {
     LinearLayout pantalla;
     TranslateAnimation animate;
     TranslateAnimation animate2;
+
+    private static Lesson current;
 
     ArrayList<Day> arrayDias;//Arreglo para la informacion de los dias
 
@@ -227,7 +230,7 @@ public class ClasesActivity extends AppCompatActivity {
             {
 
                 // The connection URL
-                String url = "http://ojalab.com/senseware/api/day";
+                String url = "http://ojalab.com/senseware/api2/day?group=2";
 
                 // Create a new RestTemplate instance
                 RestTemplate restTemplate = new RestTemplate();
@@ -361,5 +364,9 @@ public class ClasesActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    public static Lesson getCurrent() {
+        return current;
     }
 }
