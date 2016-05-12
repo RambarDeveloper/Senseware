@@ -32,8 +32,8 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         //Reproducir video
-        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
+        //youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+        //youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
 
         loadVideo();
     }
@@ -46,7 +46,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     //Metodo para reproducir video (loop)
     public void loadVideo(){
-       /* VideoView videoView = (VideoView) findViewById(R.id.video);
+       VideoView videoView = (VideoView) findViewById(R.id.video);
         Uri path = Uri.parse("android.resource://la.oja.senseware/" + R.raw.senseware);
         videoView.setVideoURI(path);
         videoView.start();
@@ -55,7 +55,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             public void onPrepared(MediaPlayer mp) {
                 mp.setLooping(true);
             }
-        });*/
+        });
     }
 
     @Override
