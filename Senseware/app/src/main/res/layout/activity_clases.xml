@@ -38,7 +38,7 @@
             android:layout_centerVertical="true"
             android:background="@color/botonMenuActive"
             android:onClick="desplegarMenu"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="35dp"
@@ -70,7 +70,7 @@
             android:layout_height="match_parent"
             android:background="#FFFFFF"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
         </LinearLayout>
 
@@ -80,7 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/white"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/listaDeClases"
@@ -102,7 +102,7 @@
             android:layout_weight="1"
             android:background="@color/botonMenuActive"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,8 +136,22 @@
                         android:paddingBottom="30dp"
                         android:paddingLeft="30dp"
                         android:paddingTop="20dp"
+                        android:text="@string/my_history"
+                        android:textSize="25sp"
+                        android:onClick="myHistory"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:background="@color/botonMenuActive"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="30dp"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="20dp"
                         android:text="@string/nuevo_proyecto"
-                        android:textSize="25sp" />
+                        android:textSize="25sp"
+                        android:onClick="newProject"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -149,7 +163,8 @@
                         android:paddingLeft="30dp"
                         android:paddingTop="20dp"
                         android:text="@string/nuevos_proyectos"
-                        android:textSize="25sp" />
+                        android:textSize="25sp"
+                        android:onClick="myProjects"/>
 
                     <TextView
                         android:layout_width="match_parent"

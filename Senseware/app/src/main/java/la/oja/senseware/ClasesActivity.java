@@ -185,6 +185,7 @@ public class ClasesActivity extends AppCompatActivity {
         editor.remove("day");
         editor.remove("max_day");
         editor.remove("max_current");
+        editor.remove("hasSuscriptionActive");
         editor.commit();
 
         sensewareDbHelper sDbHelper = new sensewareDbHelper(getApplicationContext());
@@ -202,6 +203,21 @@ public class ClasesActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    public void newProject(View view) {
+      //  Intent intent = new Intent(getApplicationContext(), NewProjectActivity.class);
+      //  startActivity(intent);
+    }
+
+    public void myProjects(View view) {
+       // Intent intent = new Intent(getApplicationContext(), MyProjectsActivity.class);
+       // startActivity(intent);
+    }
+
+    public void myHistory(View view) {
+     //   Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+      //  startActivity(intent);
     }
 
 
