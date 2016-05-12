@@ -492,7 +492,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
-                final String url =  getString(R.string.urlAPI) + "login";
+                final String url =  Config.URL_API + "login";
 
                 SharedPreferences prefs = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
                 boolean newRegisterId = prefs.getBoolean("newRegistrationID", false);
