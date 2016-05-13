@@ -108,13 +108,13 @@
                     android:layout_margin="20dp"
                     android:background="@color/botonMenuActive"
                     android:text="prueba@ejemplo.com"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/botonMenuActive"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -123,11 +123,11 @@
                         android:layout_marginTop="0dp"
                         android:background="@color/botonMenuActive"
                         android:gravity="center_vertical"
-                        android:paddingBottom="30dp"
+                        android:paddingBottom="10dp"
                         android:paddingLeft="30dp"
-                        android:paddingTop="20dp"
+                        android:paddingTop="10dp"
                         android:text="@string/my_history"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:onClick="myHistory"
                         android:id="@+id/linkMyHistory"/>
 
@@ -137,11 +137,11 @@
                         android:layout_marginTop="0dp"
                         android:background="@color/botonMenuActive"
                         android:gravity="center_vertical"
-                        android:paddingBottom="30dp"
+                        android:paddingBottom="10dp"
                         android:paddingLeft="30dp"
-                        android:paddingTop="20dp"
+                        android:paddingTop="10dp"
                         android:text="@string/nuevo_proyecto"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:onClick="newProject"
                         android:id="@+id/linkNewProject"/>
 
@@ -151,11 +151,11 @@
                         android:layout_marginTop="0dp"
                         android:background="@color/botonMenuActive"
                         android:gravity="center_vertical"
-                        android:paddingBottom="30dp"
+                        android:paddingBottom="10dp"
                         android:paddingLeft="30dp"
-                        android:paddingTop="20dp"
+                        android:paddingTop="10dp"
                         android:text="@string/nuevos_proyectos"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:onClick="myProjects"
                         android:id="@+id/linkMyProjects"/>
 
@@ -165,11 +165,11 @@
                         android:layout_marginTop="0dp"
                         android:background="@color/botonMenuActive"
                         android:gravity="center_vertical"
-                        android:paddingBottom="30dp"
+                        android:paddingBottom="10dp"
                         android:paddingLeft="30dp"
-                        android:paddingTop="20dp"
+                        android:paddingTop="10dp"
                         android:text="@string/cerrar_sesion"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:onClick="logout"
                         android:id="@+id/logout"/>
                 </LinearLayout>
