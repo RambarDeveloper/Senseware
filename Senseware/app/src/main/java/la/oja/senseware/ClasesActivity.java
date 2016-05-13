@@ -485,8 +485,8 @@ public class ClasesActivity extends AppCompatActivity {
 
                 listaDeClases.addView(emprendedorLayout);
 
+                new HttpRequestGetLessons(arrayDias.get(i).getId_day(), true).execute();
             }
-            new HttpRequestGetLessons(5, true).execute();
         }
     }
 }
