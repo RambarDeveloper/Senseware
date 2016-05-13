@@ -12,5 +12,6 @@
     <color name="btnFont">#ffffff</color>
     <color name="accent">#888888</color>
     <color name="monsoon">#777777</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>

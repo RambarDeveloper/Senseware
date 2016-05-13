@@ -79,6 +79,7 @@ public class ClasesActivity extends AppCompatActivity {
     LinearLayout pantalla;
     TranslateAnimation animate;
     TranslateAnimation animate2;
+    TextView linkNewProject;
 
     private static Lesson current;
 
@@ -96,6 +97,7 @@ public class ClasesActivity extends AppCompatActivity {
         botonMenu = (RelativeLayout) findViewById(R.id.botonMenu);
         botonMenu2 = (RelativeLayout) findViewById(R.id.botonMenu2);
         barraSuperiorClases = (RelativeLayout) findViewById(R.id.barraSuperiorClases);
+        linkNewProject = (TextView) findViewById(R.id.linkNewProject);
 
         getSupportActionBar().hide();
 
@@ -115,9 +117,7 @@ public class ClasesActivity extends AppCompatActivity {
         }else{
 
             showDown();
-
-
-        }
+       }
 
     }
 
@@ -207,17 +207,17 @@ public class ClasesActivity extends AppCompatActivity {
     }
 
     public void newProject(View view) {
-        Intent intent = new Intent(getBaseContext(), NewProjectActivity.class);
+        Intent intent = new Intent(this,  NewProjectActivity.class);
         startActivity(intent);
     }
 
     public void myProjects(View view) {
-        Intent intent = new Intent(getBaseContext(), MyProjectsActivity.class);
+        Intent intent = new Intent(this, MyProjectsActivity.class);
         startActivity(intent);
     }
 
     public void myHistory(View view) {
-     //   Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+     //   Intent intent = new Intent(this, HistoryActivity.class);
       //  startActivity(intent);
     }
 

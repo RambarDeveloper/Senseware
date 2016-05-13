@@ -128,7 +128,8 @@
                         android:paddingTop="20dp"
                         android:text="@string/my_history"
                         android:textSize="25sp"
-                        android:onClick="myHistory"/>
+                        android:onClick="myHistory"
+                        android:id="@+id/linkMyHistory"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -141,7 +142,8 @@
                         android:paddingTop="20dp"
                         android:text="@string/nuevo_proyecto"
                         android:textSize="25sp"
-                        android:onClick="newProject"/>
+                        android:onClick="newProject"
+                        android:id="@+id/linkNewProject"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -154,7 +156,8 @@
                         android:paddingTop="20dp"
                         android:text="@string/nuevos_proyectos"
                         android:textSize="25sp"
-                        android:onClick="myProjects"/>
+                        android:onClick="myProjects"
+                        android:id="@+id/linkMyProjects"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -167,7 +170,8 @@
                         android:paddingTop="20dp"
                         android:text="@string/cerrar_sesion"
                         android:textSize="25sp"
-                        android:onClick="logout"/>
+                        android:onClick="logout"
+                        android:id="@+id/logout"/>
                 </LinearLayout>
 
             </LinearLayout>
