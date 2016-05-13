@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -463,13 +464,16 @@ public class ClasesActivity extends AppCompatActivity {
                 imagen.setOnClickListener(new MyLovelyOnClickListener(arrayDias.get(i).getId_day(), arrayDias.get(i).getVisible_clases()));
 
                 //Creando imagen circular dimamicamente
-                if(i!=0){
-                    Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
+                if(i != 0)
+                {
+                    Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.lock);
                     RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
                     roundedBitmap.setCircular(true);
                     imagen.setImageDrawable(roundedBitmap);
                     emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
-                }else{
+                }
+                else
+                {
                     Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.play_red);
                     RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
                     roundedBitmap.setCircular(true);

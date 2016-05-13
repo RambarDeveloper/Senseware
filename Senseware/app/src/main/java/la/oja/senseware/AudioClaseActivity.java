@@ -124,7 +124,7 @@ public class AudioClaseActivity extends Activity {
         respuesta = (EditText)findViewById(R.id.respuesta);
         seekBarRespuesta = (SeekBar) findViewById(R.id.seekBarRespuesta);
         ImageView imagenEmprendedor = (ImageView) findViewById(R.id.imagenEmprendedor);
-        imagenEmprendedor.setImageResource(R.drawable.avatar_bill_gates);
+        imagenEmprendedor.setImageResource(R.drawable.lock);
         startButtonRespuesta = (ImageButton) findViewById(R.id.imageButtonRespuesta);
         startButtonRespuesta.setImageResource(R.mipmap.pause_respuesta);
         respuestaContenedor = (RelativeLayout) findViewById(R.id.respuestaContenedor);
@@ -137,34 +137,24 @@ public class AudioClaseActivity extends Activity {
         //videoThread = new Thread();
         //videoThread.start();
 
+        setupListeners();
+
         String email = settings.getString("email", "");
         int day = settings.getInt("day", 1);
         int pos = settings.getInt("current", 1);
-
         this.current = this.getLesson(day, pos);
         this.count_seconds = current.getSeconds();
 
-        Toast.makeText(getApplicationContext(), current.getSrc(), Toast.LENGTH_SHORT).show();
+        imageUrl = current.getSrc();
+        String[] bits = imageUrl.split("/");
+        fileName = bits[bits.length-1];
 
-        setupListeners();
+        Toast.makeText(getApplicationContext(), imageUrl, Toast.LENGTH_SHORT).show();
 
-        try
-        {
-            String url = current.getSrc();
-            String[] bits = url.split("/");
-            String filename = bits[bits.length-1];
-            imageUrl = url;
-            fileName = filename;
-            String audioFile = getFile();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        String audioFile = getFile();
 
 
         //startButton.performClick();
-
         //playFunction();
     }
 
@@ -306,7 +296,7 @@ public class AudioClaseActivity extends Activity {
                     );
 
                     seekBarRespuesta.setProgress((int) startTime);
-                    myHandler.postDelayed(UpdateSongTime, 100);
+                    //myHandler.postDelayed(UpdateSongTime, 100);
                 }
             }
         });
@@ -358,126 +348,7 @@ public class AudioClaseActivity extends Activity {
 
             }
         });
-
-
     }
-
-    //Aca se actualiza el seekbar
-    public Runnable UpdateSongTime = new Runnable() {
-        public void run() {
-
-
-            finalTime=mp.getDuration();
-            seekbarAudio.setMax((int) finalTime);
-            seekBarRespuesta.setMax((int)finalTime);
-            startTime = mp.getCurrentPosition();
-            long tiempoRespuesta = 30;
-
-            if(TimeUnit.MILLISECONDS.toSeconds((long) startTime)<10){
-                tx1.setText(String.format("%d:0%d",
-
-                                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                                toMinutes((long) startTime)))
-                );
-            }else if (TimeUnit.MILLISECONDS.toSeconds((long) startTime)>=60&&TimeUnit.MILLISECONDS.toSeconds((long) startTime)<70){
-                tx1.setText(String.format("%d:0%d",
-
-                                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                                toMinutes((long) startTime)))
-                );
-            }else{
-                tx1.setText(String.format("%d:%d",
-
-                                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                                toMinutes((long) startTime)))
-                );
-
-                if(mp.getDuration() == mp.getCurrentPosition()){
-                    startButton.setImageResource(R.mipmap.reload);
-                }
-            }
-
-            seekbarAudio.setProgress((int) startTime);
-            seekBarRespuesta.setProgress((int) startTime);
-            myHandler.postDelayed(this, 50);
-
-
-            //Cambiando elementos visuales a SUBTITULOS -> RESPUESTA
-            if(TimeUnit.MILLISECONDS.toSeconds((long) startTime)>=tiempoRespuesta){
-                barraInferiorAudio.setVisibility(View.GONE);
-                barraInferiorRespueta.setVisibility(View.VISIBLE);
-                subtituloContenedor.setVisibility(View.GONE);
-                respuestaContenedor.setVisibility(View.VISIBLE);
-                barraSuperiorRespueta.setVisibility(View.VISIBLE);
-                tiempoCuentaNumero=finalTime-startTime;
-
-                //Contador de tiempo respuesta
-                if(TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                toMinutes((long) (finalTime - startTime)))<10){
-
-                    tiempoCuenta.setText(String.format("%d:0%d",
-                                    TimeUnit.MILLISECONDS.toMinutes((long) (finalTime - startTime)),
-                                    TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
-                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                                    toMinutes((long) (finalTime - startTime))))
-                    );
-
-                }else if (TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                toMinutes((long) (finalTime - startTime)))>60&&TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                toMinutes((long) (finalTime - startTime)))<70){
-
-                    tiempoCuenta.setText(String.format("%d:0%d",
-                                    TimeUnit.MILLISECONDS.toMinutes((long) (finalTime - startTime)),
-                                    TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
-                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                                    toMinutes((long) (finalTime - startTime))))
-                    );
-
-                }else{
-                    tiempoCuenta.setText(String.format("%d:%d",
-                                    TimeUnit.MILLISECONDS.toMinutes((long) (finalTime - startTime)),
-                                    TimeUnit.MILLISECONDS.toSeconds((long) (finalTime - startTime)) -
-                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                                    toMinutes((long) (finalTime - startTime))))
-                    );
-                }
-
-            }
-
-
-            //Cambiando elementos visuales a RESPUESTA -> SUBTITULOS
-            if(TimeUnit.MILLISECONDS.toSeconds((long) startTime)<tiempoRespuesta){
-                barraInferiorAudio.setVisibility(View.VISIBLE);
-                barraInferiorRespueta.setVisibility(View.GONE);
-                subtituloContenedor.setVisibility(View.VISIBLE);
-                respuestaContenedor.setVisibility(View.GONE);
-                barraSuperiorRespueta.setVisibility(View.GONE);
-            }
-
-            //Cambiando imagen del boton por reload
-            if((TimeUnit.MILLISECONDS.toSeconds((long) startTime)==TimeUnit.MILLISECONDS.toSeconds((long) finalTime))&&(TimeUnit.MILLISECONDS.toSeconds((long) startTime)>0)){
-                startButtonRespuesta.setImageResource(R.mipmap.reload_respuesta);
-            }else{
-                if(mp.isPlaying()){
-                    startButtonRespuesta.setImageResource(R.mipmap.pause_respuesta);
-                    startButton.setImageResource(R.mipmap.pause);
-                }else{
-                    startButtonRespuesta.setImageResource(R.mipmap.play_respuesta);
-                    startButton.setImageResource(R.mipmap.play_icon);
-                }
-            }
-        }
-    };
-
 
 
     @Override
@@ -683,13 +554,191 @@ public class AudioClaseActivity extends Activity {
                 );
 
                 seekbarAudio.setProgress((int) startTime);
-                myHandler.postDelayed(UpdateSongTime, 100);
+                //myHandler.postDelayed(UpdateSongTime, 100);
+
+
+                countDown = new CountDownTimer(count_seconds * 1000, 1000) {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        //NUEVOOOO
+                        finalTime=mp.getDuration();
+                        seekbarAudio.setMax((int) finalTime);
+                        seekBarRespuesta.setMax((int)finalTime);
+                        startTime = mp.getCurrentPosition();
+                        long tiempoRespuesta = 30;
+                        seekbarAudio.setProgress((int) startTime);
+                        seekBarRespuesta.setProgress((int) startTime);
+                        //NUEVOOOO
+
+                        mostrarSubtitulo();
+
+                        count_seconds--;
+                        int play_seconds = current.getSeconds() - count_seconds;
+                        SharedPreferences settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
+                        final EditText textbox = (EditText) findViewById(R.id.respuesta);
+                        if (play_seconds == current.getSectitle()) {
+                            TextView title = (TextView) findViewById(R.id.title);
+                            title.setText(current.getSubtitle());
+                        }
+
+                        if (current.getTextfield() == 0 && count_seconds == 1) {
+                            //upgradeCurrent();
+
+                            if (mp.isPlaying()) {
+                                mp.stop();
+                                closeNotification();
+                            }
+                            //((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+
+                            String urlEvent = Config.URL_API + "event/Terminoclase";
+                            String dataEvent = "{email: '" + email + "', values: [{day: '" + day + "', clase: '" + pos + "', " + utms + "}]}";
+
+                            ContentValues values_event = new ContentValues();
+                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATA, dataEvent);
+                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATE, date);
+                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_HOOK, "event");
+                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_TYPE, "POST");
+                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_UPLOAD, 0);
+                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
+                            insertEvent("Hook", values_event);
+
+                            //Fin del dia
+                            /*if (changeDay) {
+
+                                urlEvent = getString(Config.URL_API) + "event/Terminodia" + day;
+
+                                values_event = new ContentValues();
+                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATA, dataEvent);
+                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATE, date);
+                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_HOOK, "event");
+                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_TYPE, "POST");
+                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_UPLOAD, 0);
+                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
+                                insertEvent("Hook", values_event);
+
+                                Intent in = new Intent(AudioClaseActivity.this, ShareActivity.class);
+                                startActivity(in);
+                            }*/
+
+                            if(mp.getDuration() == mp.getCurrentPosition()){
+                                startButton.setImageResource(R.mipmap.reload);
+                            }
+
+                            finish();
+                            AudioClaseActivity.this.finish();
+
+                        }
+
+                        int textfieltype = current.getTextfield();
+                        int moment = current.getSectextfield();
+                        int select_text = current.getSelect_text();
+
+                        if (textfieltype > 0 && moment > 2 && play_seconds == moment)
+                        {
+                            ///NUEVO
+                            barraInferiorAudio.setVisibility(View.GONE);
+                            barraInferiorRespueta.setVisibility(View.VISIBLE);
+                            subtituloContenedor.setVisibility(View.GONE);
+                            respuestaContenedor.setVisibility(View.VISIBLE);
+                            barraSuperiorRespueta.setVisibility(View.VISIBLE);
+                            tiempoCuentaNumero=finalTime-startTime;
+                            //NUEVO
+
+
+                            TextView countdown = (TextView) findViewById(R.id.tiempoCuenta);
+                            /*TextView pos = (TextView) findViewById(R.id.position);
+
+                            ImageButton play = (ImageButton) findViewById(R.id.play);
+                            ImageButton pause = (ImageButton) findViewById(R.id.pause);
+                            Button finish = (Button) findViewById(R.id.finish);*/
+
+                            TextView title = (TextView) findViewById(R.id.title);
+                            String titleText = title.getText().toString();
+                            if (select_text == 0 && textfieltype == 1) {
+                                textbox.setHint(titleText);
+                                textbox.setHintTextColor(Color.parseColor("#777777"));
+                            } else if (select_text != 0 && textfieltype == 1) {
+                                textbox.setText(titleText);
+                            }
+
+                            if (textfieltype > 1)  // Muestra el textbox muestro respuesta X
+                            {
+                                String getback = current.getGetback();
+
+                                //FALTA GENTE
+                                //Consulto localmente si no existe, me traigo remoto
+                                String resp = getResult(getback);
+                                Log.i("resp", resp);
+                                if (select_text == 0) {
+                                    textbox.setHint(resp);
+                                    textbox.setHintTextColor(Color.parseColor("#777777"));
+                                } else {
+                                    textbox.setText(resp);
+                                }
+                            } else if (textfieltype == 1 && current.getId_day() == 1 && current.getPosition() == 7)  // Muestra el textbox muestro respuesta X
+                            {
+                                String resumen = getResumen();
+                                textbox.setText(resumen);
+                                textbox.setHintTextColor(Color.parseColor("#777777"));
+                            }
+
+                            title.setVisibility(View.GONE);
+                            //pos.setVisibility(View.GONE);
+                            countdown.setTextSize(50);
+                            countdown.setTop(-180);
+                            countdown.setVisibility(View.GONE);
+                            //countdown2.setVisibility(View.VISIBLE);
+                            //play.setVisibility(View.GONE);
+                            //pause.setVisibility(View.GONE);
+                            //finish.setVisibility(View.VISIBLE);
+                            textbox.setVisibility(View.VISIBLE);
+
+                            textbox.setCursorVisible(true);
+                            textbox.setTextIsSelectable(true);
+                            textbox.setFocusableInTouchMode(true);
+                            textbox.requestFocus();
+
+                            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(textbox, InputMethodManager.SHOW_FORCED);
+                        }
+
+                        TextView cd = (TextView) findViewById(R.id.textView2);
+                        TextView cd2 = (TextView) findViewById(R.id.tiempoCuenta);
+                        cd.setText(getDurationString(count_seconds));
+                        cd2.setText(getDurationString(count_seconds));
+
+                        //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+
+                        // InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        // imm.showSoftInput(textbox, InputMethodManager.SHOW_FORCED);
+                        textbox.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                textbox.setFocusableInTouchMode(true);
+                                textbox.requestFocus();
+
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.showSoftInput(textbox, InputMethodManager.SHOW_FORCED);
+                            }
+                        });
+                    }
+
+
+                    @Override
+                    public void onFinish() {
+                    }
+                }.start();
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void mostrarSubtitulo() {
+
     }
 
     private void deleteAudios() {
