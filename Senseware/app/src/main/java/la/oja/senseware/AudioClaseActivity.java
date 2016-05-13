@@ -143,6 +143,8 @@ public class AudioClaseActivity extends Activity {
         int day = settings.getInt("day", 1);
         int pos = settings.getInt("current", 1);
 
+        this.current = this.getLesson(day, pos);
+
         try
         {
             String url = current.getSrc();
@@ -161,6 +163,69 @@ public class AudioClaseActivity extends Activity {
 
         startButton.performClick();
 
+    }
+
+    private Lesson getLesson(int day, int pos) {
+
+        Lesson lesson = new Lesson();
+
+        sensewareDbHelper sDbHelper = new sensewareDbHelper(getApplicationContext());
+        SQLiteDatabase db = sDbHelper.getWritableDatabase();
+        Cursor c = null;
+
+        try{
+            String[] fields = {
+                    sensewareDataSource.Lesson._ID, //0
+                    sensewareDataSource.Lesson.COLUMN_NAME_ID_LESSON, //1
+                    sensewareDataSource.Lesson.COLUMN_NAME_ID_DAY, //2
+                    sensewareDataSource.Lesson.COLUMN_NAME_TITLE, //3
+                    sensewareDataSource.Lesson.COLUMN_NAME_SUBTITLE, //4
+                    sensewareDataSource.Lesson.COLUMN_NAME_POSITION, //5
+                    sensewareDataSource.Lesson.COLUMN_NAME_SECONDS, //6
+                    sensewareDataSource.Lesson.COLUMN_NAME_SECTITLE, //7
+                    sensewareDataSource.Lesson.COLUMN_NAME_TEXT_AUDIO, //8
+                    sensewareDataSource.Lesson.COLUMN_NAME_SELECT_TEXT, //9
+                    sensewareDataSource.Lesson.COLUMN_NAME_GETBACK, //10
+                    sensewareDataSource.Lesson.COLUMN_NAME_COUNTBACK, //11
+                    sensewareDataSource.Lesson.COLUMN_NAME_TEXTFIELD, //12
+                    sensewareDataSource.Lesson.COLUMN_NAME_ID_LANGUAJE, //13
+                    sensewareDataSource.Lesson.COLUMN_NAME_BACKBUTTON, //14
+                    sensewareDataSource.Lesson.COLUMN_NAME_COPY, //15
+                    sensewareDataSource.Lesson.COLUMN_NAME_SRC, //16
+                    sensewareDataSource.Lesson.COLUMN_NAME_BACKBUTTON, //17
+                    sensewareDataSource.Lesson.COLUMN_NAME_NEXTBUTTON, //18
+                    sensewareDataSource.Lesson.COLUMN_NAME_DATE_UPDATE, //19
+                    sensewareDataSource.Lesson.COLUMN_NAME_GROUP_ALL, //20
+                    sensewareDataSource.Lesson.COLUMN_NAME_SECTEXTFIELD //21
+
+            };
+
+
+            String where = sensewareDataSource.Lesson.COLUMN_NAME_ID_DAY + "="+ day +" AND " + sensewareDataSource.Lesson.COLUMN_NAME_POSITION + pos;
+
+            c = db.query(
+                    sensewareDataSource.Lesson.TABLE_NAME,      // The table to query
+                    fields,                                 // The columns to return
+                    where,                                   // The columns for the WHERE clause
+                    null,                                       // The values for the WHERE clause
+                    null,                                       // don't group the rows
+                    null,                                       // don't filter by row groups
+                    null                                        // The sort order
+            );
+
+            if(c.moveToFirst())
+            {
+                //Lesson(String title, String subtitle, String src, int id_lesson, int id_languaje, int id_day,               int position,  int copy, int seconds, int sectitle, int nextbutton, int backbutton, int textfield, int sectextfield,  String date_update, int countback, int group_all, int select_text, String getback,   String text_audio)
+
+                lesson = new Lesson(c.getString(3), c.getString(4), c.getString(16), c.getInt(1), c.getInt(13), c.getInt(2),
+                        c.getInt(5), c.getInt(15), c.getInt(6), c.getInt(7), c.getInt(18), c.getInt(17), c.getInt(12), c.getInt(21), c.getString(19), c.getInt(11), c.getInt(20), c.getInt(9), c.getString(10), c.getString(8) );
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return lesson;
     }
 
     private void getUtms(){
@@ -608,7 +673,6 @@ public class AudioClaseActivity extends Activity {
 
                 mp.prepare();
                 mp.start();
-
 
                 String urlEvent = Config.URL_API + "event/Empezoclase";
                 String dataEvent = "{email: '" + email + "', 'id_lesson': '"+ current.getId_lesson() +  "', values: [{" + utms + "}]}";
