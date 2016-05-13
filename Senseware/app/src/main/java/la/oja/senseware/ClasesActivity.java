@@ -49,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -84,6 +85,10 @@ public class ClasesActivity extends AppCompatActivity {
     TranslateAnimation animate;
     TranslateAnimation animate2;
     TextView linkNewProject;
+    TextView linkMyProjects;
+    TextView linkMyHistory;
+    TextView logout;
+    TextView correo;
 
     private static Lesson current;
 
@@ -108,6 +113,27 @@ public class ClasesActivity extends AppCompatActivity {
         botonMenu2 = (RelativeLayout) findViewById(R.id.botonMenu2);
         barraSuperiorClases = (RelativeLayout) findViewById(R.id.barraSuperiorClases);
         linkNewProject = (TextView) findViewById(R.id.linkNewProject);
+        linkMyProjects = (TextView) findViewById(R.id.linkMyProjects);
+        linkMyHistory = (TextView) findViewById(R.id.linkMyHistory);
+        logout = (TextView) findViewById(R.id.logout);
+        correo = (TextView) findViewById(R.id.correoCuenta);
+
+        SharedPreferences settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
+        String email = settings.getString("email", "");
+
+        correo.setText(email);
+
+
+        Typeface ultralight= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Display-Ultralight.ttf");
+        Typeface light= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Text-Light.ttf");
+        Typeface thin= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Display-Thin.ttf");
+        Typeface regular= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Text-Regular.ttf");
+
+        linkMyHistory.setTypeface(thin);
+        linkMyProjects.setTypeface(thin);
+        linkNewProject.setTypeface(thin);
+        logout.setTypeface(thin);
+        correo.setTypeface(thin);
 
         getSupportActionBar().hide();
 
@@ -227,8 +253,8 @@ public class ClasesActivity extends AppCompatActivity {
     }
 
     public void myHistory(View view) {
-     //   Intent intent = new Intent(this, HistoryActivity.class);
-      //  startActivity(intent);
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
     }
 
     public void bdaction(View view) {
