@@ -10,6 +10,13 @@ android {
         targetSdkVersion 23
         versionCode 20
         versionName "2.0"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
@@ -17,11 +24,9 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/notice.txt'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
     }
 }
 
@@ -34,6 +39,7 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
 
 }
 repositories {

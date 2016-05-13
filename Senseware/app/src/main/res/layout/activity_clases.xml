@@ -168,6 +168,19 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="30dp"
                         android:paddingTop="10dp"
+                        android:text="Base de Datos (TEST)"
+                        android:textSize="25sp"
+                        android:onClick="bdaction"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:background="@color/botonMenuActive"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="30dp"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="20dp"
                         android:text="@string/cerrar_sesion"
                         android:textSize="20sp"
                         android:onClick="logout"

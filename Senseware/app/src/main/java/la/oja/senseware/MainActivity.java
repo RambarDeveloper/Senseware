@@ -29,18 +29,28 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     private static final int RECOVERY_REQUEST = 1;
     private YouTubePlayerView youTubeView;
+    SharedPreferences settings;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         //Reproducir video
         //youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         //youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
 
-        loadVideo();
+        final int id_user = settings.getInt("id_user", 0);
+
+        if(id_user != 0) {
+            startActivity(new Intent(this, ClasesActivity.class));
+        }
+        else {
+            loadVideo();
+        }
     }
 
     @Override
