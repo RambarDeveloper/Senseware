@@ -142,7 +142,11 @@ public class AudioClaseActivity extends Activity {
         int pos = settings.getInt("current", 1);
 
         this.current = this.getLesson(day, pos);
+        this.count_seconds = current.getSeconds();
+
         Toast.makeText(getApplicationContext(), current.getSrc(), Toast.LENGTH_SHORT).show();
+
+        setupListeners();
 
         try
         {
@@ -158,11 +162,21 @@ public class AudioClaseActivity extends Activity {
             e.printStackTrace();
         }
 
-        //setupListeners();
 
         //startButton.performClick();
 
+        //playFunction();
     }
+
+    @Override
+    public void onBackPressed() {
+        if(mp.isPlaying()){
+            mp.stop();
+            closeNotification();
+        }
+        super.onBackPressed();
+    }
+
 
     private Lesson getLesson(int day, int pos) {
 
@@ -259,35 +273,7 @@ public class AudioClaseActivity extends Activity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mp.isPlaying())
-                {
-                    Toast.makeText(getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
-                    mp.pause();
-                    startButton.setImageResource(R.mipmap.play_icon);
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
-                    mp.start();
-                    startButton.setImageResource(R.mipmap.pause);
-
-                    finalTime = mp.getDuration();
-                    startTime = mp.getCurrentPosition();
-
-                    if (oneTimeOnly == 0) {
-                        seekbarAudio.setMax((int) finalTime);
-                        oneTimeOnly = 1;
-                    }
-
-                    tx1.setText(String.format("%d:%d",
-                                    TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                                    TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) startTime)))
-                    );
-
-                    seekbarAudio.setProgress((int) startTime);
-                    myHandler.postDelayed(UpdateSongTime, 100);
-                }
+                playFunction();
             }
         });
 
@@ -634,49 +620,24 @@ public class AudioClaseActivity extends Activity {
         return myDir + "/" + fileName;
     }
 
-    public void playFunction(){
+    public void playFunction()
+    {
+        if (mp.isPlaying()) {
+            Toast.makeText(getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
+            mp.pause();
+            startButton.setImageResource(R.mipmap.play_icon);
+        } else {
+            final int day = settings.getInt("day", 0);
+            final String email = settings.getString("email", "");
+            final int pos = settings.getInt("current", 0);
 
-        final int day = settings.getInt("day", 0);
-        final String email = settings.getString("email", "");
-        final int pos = settings.getInt("current", 0);
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            final String date = sdf.format(c.getTime());
 
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String date = sdf.format(c.getTime());
-
-        if(pos==1){
-            String urlEvent = Config.URL_API + "event/Empezodia"+day;
-            String dataEvent = "{email: '" + email + "', values: [{" + utms + "}]}";
-
-            ContentValues values_event = new ContentValues();
-            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATA, dataEvent);
-            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATE, date);
-            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_HOOK, "event");
-            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_TYPE, "POST");
-            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_UPLOAD, 0);
-            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
-            insertEvent("Hook", values_event);
-        }
-
-        try
-        {
-            try {
-
-                if(day == 1)
-                {
-                    AssetFileDescriptor descriptor = getAssets().openFd("sounds/"+fileName);
-                    mp.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
-                    descriptor.close();
-
-                }
-                else
-                    mp.setDataSource(myDir + "/" + fileName);
-
-                mp.prepare();
-                mp.start();
-
-                String urlEvent = Config.URL_API + "event/Empezoclase";
-                String dataEvent = "{email: '" + email + "', 'id_lesson': '"+ current.getId_lesson() +  "', values: [{" + utms + "}]}";
+            if (pos == 1) {
+                String urlEvent = Config.URL_API + "event/Empezodia" + day;
+                String dataEvent = "{email: '" + email + "', values: [{" + utms + "}]}";
 
                 ContentValues values_event = new ContentValues();
                 values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATA, dataEvent);
@@ -687,171 +648,47 @@ public class AudioClaseActivity extends Activity {
                 values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
                 insertEvent("Hook", values_event);
             }
+
+            try {
+
+                if (day == 1) {
+                    AssetFileDescriptor descriptor = getAssets().openFd("sounds/" + fileName);
+                    mp.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+                    descriptor.close();
+
+                } else {
+                    mp.setDataSource(myDir + "/" + fileName);
+                }
+
+                mp.prepare();
+                mp.start();
+                displayNotification();
+
+                Toast.makeText(getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
+
+                startButton.setImageResource(R.mipmap.pause);
+
+                finalTime = mp.getDuration();
+                startTime = mp.getCurrentPosition();
+
+                if (oneTimeOnly == 0) {
+                    seekbarAudio.setMax((int) finalTime);
+                    oneTimeOnly = 1;
+                }
+
+                tx1.setText(String.format("%d:%d",
+                                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) startTime)))
+                );
+
+                seekbarAudio.setProgress((int) startTime);
+                myHandler.postDelayed(UpdateSongTime, 100);
+            }
             catch (Exception e)
             {
-                mp.start();
+                e.printStackTrace();
             }
-
-            if(mp != null) {
-
-                if(mp.isPlaying())
-                    displayNotification();
-
-                // And From your main() method or any other method
-                countDown = new CountDownTimer(count_seconds * 1000, 1000) {
-
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-
-                        count_seconds--;
-                        int play_seconds = current.getSeconds() - count_seconds;
-                        SharedPreferences settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
-                        final EditText textbox = (EditText) findViewById(R.id.respuesta);
-                        if (play_seconds == current.getSectitle()) {
-                            TextView title = (TextView) findViewById(R.id.title);
-                            title.setText(current.getSubtitle());
-                        }
-
-                        if (current.getTextfield() == 0 && count_seconds == 1) {
-                            //upgradeCurrent();
-
-                            if (mp.isPlaying()) {
-                                mp.stop();
-                                closeNotification();
-                            }
-                            //((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
-
-                            String urlEvent = Config.URL_API + "event/Terminoclase";
-                            String dataEvent = "{email: '" + email + "', values: [{day: '" + day + "', clase: '" + pos + "', " + utms + "}]}";
-
-                            ContentValues values_event = new ContentValues();
-                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATA, dataEvent);
-                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATE, date);
-                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_HOOK, "event");
-                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_TYPE, "POST");
-                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_UPLOAD, 0);
-                            values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
-                            insertEvent("Hook", values_event);
-
-                            //Fin del dia
-                            /*if (changeDay) {
-
-                                urlEvent = getString(Config.URL_API) + "event/Terminodia" + day;
-
-                                values_event = new ContentValues();
-                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATA, dataEvent);
-                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_DATE, date);
-                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_HOOK, "event");
-                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_TYPE, "POST");
-                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_UPLOAD, 0);
-                                values_event.put(sensewareDataSource.Hook.COLUMN_NAME_URL, urlEvent);
-                                insertEvent("Hook", values_event);
-
-                                Intent in = new Intent(AudioClaseActivity.this, ShareActivity.class);
-                                startActivity(in);
-                            }*/
-
-
-                            finish();
-                            AudioClaseActivity.this.finish();
-
-                        }
-
-                        int textfieltype = current.getTextfield();
-                        int moment = current.getSectextfield();
-                        int select_text = current.getSelect_text();
-
-                        if (textfieltype > 0 && moment > 2 && play_seconds == moment)
-                        {
-                            TextView countdown = (TextView) findViewById(R.id.tiempoCuenta);
-                            /*TextView pos = (TextView) findViewById(R.id.position);
-
-                            ImageButton play = (ImageButton) findViewById(R.id.play);
-                            ImageButton pause = (ImageButton) findViewById(R.id.pause);
-                            Button finish = (Button) findViewById(R.id.finish);*/
-
-                            TextView title = (TextView) findViewById(R.id.title);
-                            String titleText = title.getText().toString();
-                            if (select_text == 0 && textfieltype == 1) {
-                                textbox.setHint(titleText);
-                                textbox.setHintTextColor(Color.parseColor("#777777"));
-                            } else if (select_text != 0 && textfieltype == 1){
-                                textbox.setText(titleText);
-                            }
-
-                            if (textfieltype > 1)  // Muestra el textbox muestro respuesta X
-                            {
-                                String getback = current.getGetback();
-
-                                //FALTA GENTE
-                                //Consulto localmente si no existe, me traigo remoto
-                                String resp = getResult(getback);
-                                Log.i("resp", resp);
-                                if(select_text == 0) {
-                                    textbox.setHint(resp);
-                                    textbox.setHintTextColor(Color.parseColor("#777777"));
-                                }
-                                else
-                                {
-                                    textbox.setText(resp);
-                                }
-                            } else if (textfieltype == 1 && current.getId_day() == 1 && current.getPosition() == 7)  // Muestra el textbox muestro respuesta X
-                            {
-                                String resumen = getResumen();
-                                textbox.setText(resumen);
-                                textbox.setHintTextColor(Color.parseColor("#777777"));
-                            }
-
-                            title.setVisibility(View.GONE);
-                            //pos.setVisibility(View.GONE);
-                            countdown.setTextSize(50);
-                            countdown.setTop(-180);
-                            countdown.setVisibility(View.GONE);
-                            //countdown2.setVisibility(View.VISIBLE);
-                            //play.setVisibility(View.GONE);
-                            //pause.setVisibility(View.GONE);
-                            //finish.setVisibility(View.VISIBLE);
-                            textbox.setVisibility(View.VISIBLE);
-
-                            textbox.setCursorVisible(true);
-                            textbox.setTextIsSelectable(true);
-                            textbox.setFocusableInTouchMode(true);
-                            textbox.requestFocus();
-
-                            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(textbox, InputMethodManager.SHOW_FORCED);
-                        }
-
-                        TextView cd = (TextView) findViewById(R.id.tiempoCuenta);
-                        cd.setText(getDurationString(count_seconds));
-;
-                        //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-
-                        // InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        // imm.showSoftInput(textbox, InputMethodManager.SHOW_FORCED);
-                        textbox.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                textbox.setFocusableInTouchMode(true);
-                                textbox.requestFocus();
-
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.showSoftInput(textbox, InputMethodManager.SHOW_FORCED);
-                            }
-                        });
-                    }
-
-
-                    @Override
-                    public void onFinish() {
-                    }
-                }.start();
-            }
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
         }
     }
 

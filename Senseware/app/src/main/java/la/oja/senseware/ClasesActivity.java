@@ -438,7 +438,7 @@ public class ClasesActivity extends AppCompatActivity {
     private void createListaClases(int longitudLista){
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 
-        for(int i=0; i<longitudLista; i++) {
+        for(int i=longitudLista-1; i>=0; i--) {
 
             if (arrayDias.get(i).getVisible() == 1) {
 
