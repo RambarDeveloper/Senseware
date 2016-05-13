@@ -45,19 +45,20 @@
             android:name=".LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_login"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".MainActivity">
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="la.oja.senseware.MainActivity" />
         </activity>
         <activity
             android:name=".ClasesActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".AudioClaseActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name=".DBActivity"></activity>
     </application>
 
 </manifest>

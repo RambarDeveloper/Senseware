@@ -137,7 +137,7 @@ public class AudioClaseActivity extends Activity {
         //videoThread = new Thread();
         //videoThread.start();
 
-        this.current = ClasesActivity.getCurrent();
+        this.current = null; //ClasesActivity.getCurrent();
 
         String email = settings.getString("email", "");
         int day = settings.getInt("day", 1);

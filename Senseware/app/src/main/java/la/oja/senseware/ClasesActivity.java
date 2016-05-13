@@ -4,6 +4,8 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActionBar;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,6 +42,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -84,12 +88,18 @@ public class ClasesActivity extends AppCompatActivity {
 
     ArrayList<Day> arrayDias;//Arreglo para la informacion de los dias
 
+    //Opciones
+    SharedPreferences settings;
+    //API
+    ApiCall call;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clases);
+        settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
+        call = new ApiCall(getApplicationContext());
         layoutMenu = (LinearLayout) findViewById(R.id.layoutMenu);
         scrollListaClase = (ScrollView)findViewById((R.id.scrollListaDeClases));
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
@@ -221,6 +231,10 @@ public class ClasesActivity extends AppCompatActivity {
       //  startActivity(intent);
     }
 
+    public void bdaction(View view) {
+        Intent intent = new Intent(getApplicationContext(), DBActivity.class);
+        startActivity(intent);
+    }
 
     private class HttpRequestGetData extends AsyncTask<Void, Void, String> {
         @Override
@@ -228,9 +242,8 @@ public class ClasesActivity extends AppCompatActivity {
             String result = "Nada";
             try
             {
-
                 // The connection URL
-                String url = "http://ojalab.com/senseware/api2/day?group=2";
+                String url = Config.URL_API + "day?group=2";
 
                 // Create a new RestTemplate instance
                 RestTemplate restTemplate = new RestTemplate();
@@ -262,6 +275,7 @@ public class ClasesActivity extends AppCompatActivity {
                     dia.setVisible(jsonDia.getInt("visible"));
 
                     arrayDias.add(dia);
+
                 }
             }
             catch (Exception e)
@@ -275,12 +289,124 @@ public class ClasesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             createListaClases(lenghtArraylist);
-
-
         }
     }
 
+    private class HttpRequestGetLessons extends AsyncTask<Void, Void, Lesson[]> {
+        public int id_day;
+        public boolean background;
+        ProgressDialog progress;
+        Lesson[] lessons_local;
 
+        public HttpRequestGetLessons(int id_day, boolean background) {
+            this.id_day = id_day;
+            this.background = background;
+            if (!background){
+                progress = ProgressDialog.show(ClasesActivity.this, "Senseware", "Descargando clases...", true);
+            }
+        }
+
+        @Override
+        protected Lesson[] doInBackground(Void... params) {
+            try {
+
+                String mail = settings.getString("email", "");
+                String pass = settings.getString("password", "");
+
+                final String url =  Config.URL_API + "lessons?id_languaje=1&id_day=" + String.valueOf(id_day);
+
+                String resp = call.callGet(url);
+
+                //convert the response from string to JsonObject
+                JSONObject obj = new JSONObject(resp);
+                int status = obj.getInt("status");
+                String message = obj.getString("message");
+
+                if (status == 200 && message.equals("OK"))
+                {
+                    //obtained the lessons data
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    JSONArray lessonData = (JSONArray) obj.get("result");
+
+                    //get lessons to array
+                    Lesson[] lessons = objectMapper.readValue(lessonData.toString(), Lesson[].class);
+                    return lessons;
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Lesson[] lessons) {
+            if (!background) {
+                progress.dismiss();
+            }
+
+            sensewareDbHelper sDbHelper = new sensewareDbHelper(getApplicationContext());
+            SQLiteDatabase db = sDbHelper.getWritableDatabase();
+
+            String selection = sensewareDataSource.Lesson.COLUMN_NAME_ID_DAY + " = ?";
+            String[] selectionArgs = {String.valueOf(id_day)};
+            db.delete(sensewareDataSource.Lesson.TABLE_NAME, selection, selectionArgs);
+
+            for (int i = 0; i < lessons.length; i++) {
+                ContentValues values = new ContentValues();
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_TITLE, lessons[i].getTitle());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_BACKBUTTON, lessons[i].getBackbutton());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_COPY, lessons[i].getCopy());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_DOWNLOAD, 0);
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_ID_DAY, lessons[i].getId_day());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_ID_LANGUAJE, lessons[i].getId_languaje());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_ID_LESSON, lessons[i].getId_lesson());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_NEXTBUTTON, lessons[i].getNextbutton());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_POSITION, lessons[i].getPosition());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_SECONDS, lessons[i].getSeconds());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_SECTEXTFIELD, lessons[i].getSectextfield());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_SECTITLE, lessons[i].getSectitle());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_TEXTFIELD, lessons[i].getTextfield());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_SUBTITLE, lessons[i].getSubtitle());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_SRC, lessons[i].getSrc());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_DATE_UPDATE, lessons[i].getDate_update());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_COUNTBACK, lessons[i].getCountback());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_GROUP_ALL, lessons[i].getGroup_all());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_SELECT_TEXT, lessons[i].getSelect_text());
+                values.put(sensewareDataSource.Lesson.COLUMN_NAME_GETBACK, lessons[i].getGetback());
+                // Insert the new row, returning the primary key value of the new row
+                long newRowId;
+                newRowId = db.insert(sensewareDataSource.Lesson.TABLE_NAME, null, values);
+            }
+            db.close();
+        }
+    }
+
+    private boolean compareObjects(Lesson[] lessons, Lesson[] lessonList) {
+        boolean equals = true;
+        if (lessons != null && lessonList != null && lessonList.length == lessons.length) {
+            for (int i = 0; i < lessonList.length; i++) {
+                if (lessons[i].getTitle() == null || lessonList[i].getTitle() == null || lessonList[i].getTitle().compareTo(lessons[i].getTitle()) != 0 ||
+                        lessonList[i].getSubtitle().compareTo(lessons[i].getSubtitle()) != 0 ||
+                        lessonList[i].getSrc().compareTo(lessons[i].getSrc()) != 0 ||
+                        lessonList[i].getId_lesson() != lessons[i].getId_lesson() ||
+                        lessonList[i].getId_day() != lessons[i].getId_day() ||
+                        lessonList[i].getId_languaje() != lessons[i].getId_languaje() ||
+                        lessonList[i].getSeconds() != lessons[i].getSeconds() ||
+                        lessonList[i].getPosition() != lessons[i].getPosition()
+                        ) {
+
+                    equals = false;
+                    break;
+                }
+            }
+        } else {
+
+            equals = false;
+        }
+        return equals;
+    }
 
     //Metodo para crear los elementos de la GUI dinamicamente con info traida de la DB
     private void createListaClases(int longitudLista){
@@ -316,9 +442,6 @@ public class ClasesActivity extends AppCompatActivity {
                         startActivity(intento);
                     }
                 });
-
-
-
 
                 //Creando imagen circular dimamicamente
                 if(i!=3){
@@ -363,10 +486,7 @@ public class ClasesActivity extends AppCompatActivity {
                 listaDeClases.addView(emprendedorLayout);
 
             }
+            new HttpRequestGetLessons(5, true).execute();
         }
-    }
-
-    public static Lesson getCurrent() {
-        return current;
     }
 }
