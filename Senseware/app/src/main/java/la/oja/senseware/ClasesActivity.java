@@ -434,17 +434,10 @@ public class ClasesActivity extends AppCompatActivity {
                 imagen.getLayoutParams().height=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
                 imagen.getLayoutParams().width=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
 
-                //Agregando onClick listener
-                final Intent intento = new Intent(this, AudioClaseActivity.class);
-                imagen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(intento);
-                    }
-                });
+                imagen.setOnClickListener(new MyLovelyOnClickListener(arrayDias.get(i).getId_day(), arrayDias.get(i).getVisible_clases()));
 
                 //Creando imagen circular dimamicamente
-                if(i!=3){
+                if(i!=0){
                     Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
                     RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
                     roundedBitmap.setCircular(true);
@@ -478,7 +471,7 @@ public class ClasesActivity extends AppCompatActivity {
                 textClaseParams.gravity=Gravity.CENTER_HORIZONTAL;
                 textClaseParams.bottomMargin=10;
                 textoClases.setLayoutParams(textClaseParams);
-                textoClases.setText(arrayDias.get(i).getVisible_clases()+"/" + i);
+                textoClases.setText(arrayDias.get(i).getVisible_clases() + "/" + i);
                 textoClases.setTextColor(getResources().getColorStateList(R.color.textColorClases));
                 textoClases.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                 emprendedorLayout.addView(textoClases);
@@ -489,4 +482,26 @@ public class ClasesActivity extends AppCompatActivity {
             }
         }
     }
+
+    public class MyLovelyOnClickListener implements View.OnClickListener
+    {
+        final Intent intento = new Intent(getApplicationContext(), AudioClaseActivity.class);
+        int id_day, visibleclases;
+
+        public MyLovelyOnClickListener(int id_day, int visibleclases) {
+            this.id_day = id_day;
+            this.visibleclases = visibleclases;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("day", id_day);
+            editor.putInt("current", 1);
+            editor.putInt("visibleclases", visibleclases);
+            editor.commit();
+            startActivity(intento);
+        }
+    };
 }
