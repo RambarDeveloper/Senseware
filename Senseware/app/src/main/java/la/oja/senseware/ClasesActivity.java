@@ -334,8 +334,8 @@ public class ClasesActivity extends AppCompatActivity {
 
         @Override
         protected Lesson[] doInBackground(Void... params) {
-            try {
-
+            try
+            {
                 String mail = settings.getString("email", "");
                 String pass = settings.getString("password", "");
 

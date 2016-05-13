@@ -137,13 +137,12 @@ public class AudioClaseActivity extends Activity {
         //videoThread = new Thread();
         //videoThread.start();
 
-        this.current = null; //ClasesActivity.getCurrent();
-
         String email = settings.getString("email", "");
         int day = settings.getInt("day", 1);
         int pos = settings.getInt("current", 1);
 
         this.current = this.getLesson(day, pos);
+        Toast.makeText(getApplicationContext(), current.getSrc(), Toast.LENGTH_SHORT).show();
 
         try
         {
@@ -159,9 +158,9 @@ public class AudioClaseActivity extends Activity {
             e.printStackTrace();
         }
 
-        setupListeners();
+        //setupListeners();
 
-        startButton.performClick();
+        //startButton.performClick();
 
     }
 
@@ -201,7 +200,7 @@ public class AudioClaseActivity extends Activity {
             };
 
 
-            String where = sensewareDataSource.Lesson.COLUMN_NAME_ID_DAY + "="+ day +" AND " + sensewareDataSource.Lesson.COLUMN_NAME_POSITION + pos;
+            String where = sensewareDataSource.Lesson.COLUMN_NAME_ID_DAY + "="+ day +" AND " + sensewareDataSource.Lesson.COLUMN_NAME_POSITION +"="+ pos;
 
             c = db.query(
                     sensewareDataSource.Lesson.TABLE_NAME,      // The table to query
@@ -265,7 +264,9 @@ public class AudioClaseActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
                     mp.pause();
                     startButton.setImageResource(R.mipmap.play_icon);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
                     mp.start();
                     startButton.setImageResource(R.mipmap.pause);
