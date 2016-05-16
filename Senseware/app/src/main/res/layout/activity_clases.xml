@@ -25,7 +25,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/boton_menu_clases" />
 
         </RelativeLayout>
 
@@ -44,7 +44,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/boton_menu_clases" />
 
         </RelativeLayout>
 
@@ -60,30 +60,70 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <ScrollView
-            android:id="@+id/scrollListaDeClases"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:id="@+id/scrollYBotonRespuesta"
             android:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/listaDeClases"
+            <ScrollView
+                android:id="@+id/scrollListaDeClases"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@android:color/white"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/listaDeClases"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#333333"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
 
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#00ffffff"
+                    android:src="@mipmap/menu_icon_clases" />
+
+                <TextView
+                    android:id="@+id/textoRespuestas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="Respuestas"
+                    android:textColor="#9D9D9D"
+                    android:textSize="18sp" />
             </LinearLayout>
 
+        </LinearLayout>
 
-        </ScrollView>
+
 
         <LinearLayout
             android:id="@+id/layoutMenu"
@@ -191,36 +231,12 @@
         </LinearLayout>
 
 
+
+
+
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#333333"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
 
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#00ffffff"
-            android:src="@mipmap/menu_icon_clases" />
-
-        <TextView
-            android:id="@+id/textoRespuestas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="Respuestas"
-            android:textColor="#9D9D9D"
-            android:textSize="18sp" />
-    </LinearLayout>
 
 </LinearLayout>

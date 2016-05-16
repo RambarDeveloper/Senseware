@@ -6,4 +6,5 @@
     <dimen name="hmargin_iniciar_sesion">30dp</dimen>
     <dimen name="emprendedor_imagen">70dp</dimen>
     <dimen name="margen_emprendedor_imagen">10dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 </resources>

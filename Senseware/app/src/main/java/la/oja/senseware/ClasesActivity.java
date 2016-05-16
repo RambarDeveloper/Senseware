@@ -84,6 +84,7 @@ public class ClasesActivity extends AppCompatActivity {
     TranslateAnimation animate;
     TranslateAnimation animate2;
     TextView linkNewProject;
+    LinearLayout scrollYBotonRespuesta;
 
     private static Lesson current;
 
@@ -108,6 +109,7 @@ public class ClasesActivity extends AppCompatActivity {
         botonMenu2 = (RelativeLayout) findViewById(R.id.botonMenu2);
         barraSuperiorClases = (RelativeLayout) findViewById(R.id.barraSuperiorClases);
         linkNewProject = (TextView) findViewById(R.id.linkNewProject);
+        scrollYBotonRespuesta = (LinearLayout) findViewById(R.id.scrollYBotonRespuesta);
 
         getSupportActionBar().hide();
 
@@ -119,7 +121,7 @@ public class ClasesActivity extends AppCompatActivity {
 
 
 
-        if(scrollListaClase.getVisibility()==View.VISIBLE){
+        if(scrollYBotonRespuesta.getVisibility()==View.VISIBLE){
 
             showUp();
 
@@ -134,11 +136,11 @@ public class ClasesActivity extends AppCompatActivity {
 
 
     private void showUp(){
-        animate2 = new TranslateAnimation(0,0, 0, scrollListaClase.getHeight());
+        animate2 = new TranslateAnimation(0,0, 0, scrollYBotonRespuesta.getHeight());
         animate2.setDuration(500);
         animate2.setFillBefore(true);
-        scrollListaClase.startAnimation(animate2);
-        scrollListaClase.setVisibility(View.GONE);
+        scrollYBotonRespuesta.startAnimation(animate2);
+        scrollYBotonRespuesta.setVisibility(View.GONE);
 
         animate = new TranslateAnimation(0,0, -layoutMenu.getHeight(), 0);
         animate.setDuration(500);
@@ -175,11 +177,11 @@ public class ClasesActivity extends AppCompatActivity {
             }
         });
 
-        animate2 = new TranslateAnimation(0,0, scrollListaClase.getHeight(), 0);
+        animate2 = new TranslateAnimation(0,0, scrollYBotonRespuesta.getHeight(), 0);
         animate2.setDuration(500);
         animate2.setFillAfter(true);
-        scrollListaClase.startAnimation(animate2);
-        scrollListaClase.setVisibility(View.VISIBLE);
+        scrollYBotonRespuesta.startAnimation(animate2);
+        scrollYBotonRespuesta.setVisibility(View.VISIBLE);
     }
 
     public void logout(View view) {
