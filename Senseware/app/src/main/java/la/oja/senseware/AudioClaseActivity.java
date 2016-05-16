@@ -51,11 +51,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import la.oja.senseware.Modelo.Day;
 import la.oja.senseware.Modelo.Lesson;
 import la.oja.senseware.Modelo.Project;
+import la.oja.senseware.Modelo.Subtitulo;
 import la.oja.senseware.data.sensewareDataSource;
 import la.oja.senseware.data.sensewareDbHelper;
 
@@ -92,6 +95,8 @@ public class AudioClaseActivity extends Activity {
     private static CountDownTimer countDown;
     //Subtitulo
     private RelativeLayout subtituloContenedor;
+    private ArrayList<Subtitulo> subtitulos;
+
     private File myDir;
     String fileName, imageUrl, utms;
     ProgressDialog progress;
@@ -737,7 +742,8 @@ public class AudioClaseActivity extends Activity {
         }
     }
 
-    private void mostrarSubtitulo() {
+    private void mostrarSubtitulo()
+    {
 
     }
 
