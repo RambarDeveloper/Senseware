@@ -444,6 +444,7 @@ public class ClasesActivity extends AppCompatActivity {
     //Metodo para crear los elementos de la GUI dinamicamente con info traida de la DB
     private void createListaClases(int longitudLista){
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
+        int x= 0, y = 0;
 
         for(int i=longitudLista-1; i>=0; i--) {
 
@@ -477,6 +478,7 @@ public class ClasesActivity extends AppCompatActivity {
                     roundedBitmap.setCircular(true);
                     imagen.setImageDrawable(roundedBitmap);
                     emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
+
                 }
                 else
                 {
@@ -517,6 +519,7 @@ public class ClasesActivity extends AppCompatActivity {
                 new HttpRequestGetLessons(arrayDias.get(i).getId_day(), true).execute();
             }
         }
+        scrollListaClase.smoothScrollTo(x, y);
     }
 
     public class MyLovelyOnClickListener implements View.OnClickListener
