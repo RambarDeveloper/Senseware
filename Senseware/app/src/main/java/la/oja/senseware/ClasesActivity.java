@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -85,6 +87,11 @@ public class ClasesActivity extends AppCompatActivity {
     TranslateAnimation animate2;
     TextView linkNewProject;
     LinearLayout scrollYBotonRespuesta;
+    TextView linkMyProjects;
+    TextView linkMyHistory;
+    TextView logout;
+    TextView correo;
+
 
     private static Lesson current;
 
@@ -109,7 +116,31 @@ public class ClasesActivity extends AppCompatActivity {
         botonMenu2 = (RelativeLayout) findViewById(R.id.botonMenu2);
         barraSuperiorClases = (RelativeLayout) findViewById(R.id.barraSuperiorClases);
         linkNewProject = (TextView) findViewById(R.id.linkNewProject);
+
         scrollYBotonRespuesta = (LinearLayout) findViewById(R.id.scrollYBotonRespuesta);
+
+        linkMyProjects = (TextView) findViewById(R.id.linkMyProjects);
+        linkMyHistory = (TextView) findViewById(R.id.linkMyHistory);
+        logout = (TextView) findViewById(R.id.logout);
+        correo = (TextView) findViewById(R.id.correoCuenta);
+
+        SharedPreferences settings = getSharedPreferences("ActivitySharedPreferences_data", 0);
+        String email = settings.getString("email", "");
+
+        correo.setText(email);
+
+
+        Typeface ultralight= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Display-Ultralight.ttf");
+        Typeface light= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Text-Light.ttf");
+        Typeface thin= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Display-Thin.ttf");
+        Typeface regular= Typeface.createFromAsset(getAssets(), "fonts/SF-UI-Text-Regular.ttf");
+
+        linkMyHistory.setTypeface(thin);
+        linkMyProjects.setTypeface(thin);
+        linkNewProject.setTypeface(thin);
+        logout.setTypeface(thin);
+        correo.setTypeface(thin);
+
 
         getSupportActionBar().hide();
 
@@ -229,8 +260,8 @@ public class ClasesActivity extends AppCompatActivity {
     }
 
     public void myHistory(View view) {
-     //   Intent intent = new Intent(this, HistoryActivity.class);
-      //  startActivity(intent);
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
     }
 
     public void bdaction(View view) {
@@ -310,8 +341,8 @@ public class ClasesActivity extends AppCompatActivity {
 
         @Override
         protected Lesson[] doInBackground(Void... params) {
-            try {
-
+            try
+            {
                 String mail = settings.getString("email", "");
                 String pass = settings.getString("password", "");
 
@@ -414,7 +445,7 @@ public class ClasesActivity extends AppCompatActivity {
     private void createListaClases(int longitudLista){
         LinearLayout listaDeClases = (LinearLayout) findViewById(R.id.listaDeClases);
 
-        for(int i=0; i<longitudLista; i++) {
+        for(int i=longitudLista-1; i>=0; i--) {
 
             if (arrayDias.get(i).getVisible() == 1) {
 
@@ -436,23 +467,19 @@ public class ClasesActivity extends AppCompatActivity {
                 imagen.getLayoutParams().height=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
                 imagen.getLayoutParams().width=(int)getResources().getDimension(R.dimen.emprendedor_imagen);
 
-                //Agregando onClick listener
-                final Intent intento = new Intent(this, AudioClaseActivity.class);
-                imagen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(intento);
-                    }
-                });
+                imagen.setOnClickListener(new MyLovelyOnClickListener(arrayDias.get(i).getId_day(), arrayDias.get(i).getVisible_clases()));
 
                 //Creando imagen circular dimamicamente
-                if(i!=3){
-                    Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_bill_gates);
+                if(i != 0)
+                {
+                    Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.lock);
                     RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
                     roundedBitmap.setCircular(true);
                     imagen.setImageDrawable(roundedBitmap);
                     emprendedorLayout.addView(imagen); //agregando imagen al LinearLayout
-                }else{
+                }
+                else
+                {
                     Bitmap imagenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.play_red);
                     RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), imagenBitmap);
                     roundedBitmap.setCircular(true);
@@ -480,7 +507,7 @@ public class ClasesActivity extends AppCompatActivity {
                 textClaseParams.gravity=Gravity.CENTER_HORIZONTAL;
                 textClaseParams.bottomMargin=10;
                 textoClases.setLayoutParams(textClaseParams);
-                textoClases.setText(arrayDias.get(i).getVisible_clases()+"/" + i);
+                textoClases.setText(arrayDias.get(i).getVisible_clases() + "/" + i);
                 textoClases.setTextColor(getResources().getColorStateList(R.color.textColorClases));
                 textoClases.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                 emprendedorLayout.addView(textoClases);
@@ -491,4 +518,26 @@ public class ClasesActivity extends AppCompatActivity {
             }
         }
     }
+
+    public class MyLovelyOnClickListener implements View.OnClickListener
+    {
+        final Intent intento = new Intent(getApplicationContext(), AudioClaseActivity.class);
+        int id_day, visibleclases;
+
+        public MyLovelyOnClickListener(int id_day, int visibleclases) {
+            this.id_day = id_day;
+            this.visibleclases = visibleclases;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("day", id_day);
+            editor.putInt("current", 1);
+            editor.putInt("visibleclases", visibleclases);
+            editor.commit();
+            startActivity(intento);
+        }
+    };
 }

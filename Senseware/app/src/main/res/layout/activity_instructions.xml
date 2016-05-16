@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:weightSum="1">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -38,26 +37,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_weight="4"
+            android:background="#333333"
             android:gravity="center_vertical"
-            android:background="@color/colorPrimaryDark"
-            android:layout_weight="8">
+            android:orientation="horizontal">
 
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/boton_atras_instrucciones"
+                android:layout_margin="5dp"
                 android:background="#00ffffff"
-                android:layout_margin="5dp" />
+                android:src="@mipmap/boton_atras_instrucciones" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Instrucciones"
                 android:layout_marginLeft="10dp"
+                android:text="Instrucciones"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -74,7 +73,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="8"
+            android:layout_weight="4"
             android:gravity="center">
 
             <me.relex.circleindicator.CircleIndicator
@@ -83,7 +82,7 @@
                 android:layout_height="match_parent"
                 android:background="#ffffff"
                 app:ci_drawable="@drawable/indicadores"
-                app:ci_drawable_unselected="@drawable/indicadores_unselected"/>
+                app:ci_drawable_unselected="@drawable/indicadores_unselected" />
 
         </LinearLayout>
 

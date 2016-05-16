@@ -76,9 +76,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+
             android:name=".InstructionsActivity"
             android:label="@string/title_activity_instructions"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".HistoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

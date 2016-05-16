@@ -81,12 +81,15 @@ public class NewProjectActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                btnClear.setVisibility(View.VISIBLE);
+                if (s.toString().trim().length() == 0)
+                    btnClear.setVisibility(View.GONE);
+                else
+                    btnClear.setVisibility(View.VISIBLE);
+
             }
 
             @Override
